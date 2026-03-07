@@ -423,6 +423,46 @@ const checklistItems = [
   "Export one optimized clip per view plus a sweep showing replenishment.",
 ];
 
+const featuredExample = {
+  title: "Good example: stress apical 4 chamber",
+  caption:
+    "Strong myocardial opacification with a clean cavity-myocardium balance. Use this as the reference look for a successful study.",
+  src: "content/4ch-stress.mov",
+  type: "video/quicktime",
+};
+
+const pitfallHotspots = [
+  {
+    id: "hotspot-1",
+    title: "Apical blooming",
+    description:
+      "Near-field signal is too hot here. Back the gain down a few clicks or lower infusion before it washes out the apex.",
+    left: "31%",
+    top: "24%",
+  },
+  {
+    id: "hotspot-2",
+    title: "Lateral wall dropout",
+    description:
+      "This edge can disappear when focus and sector width are off. Narrow the sector and bring focus back toward mid-LV.",
+    left: "66%",
+    top: "44%",
+  },
+  {
+    id: "hotspot-3",
+    title: "Basal shadowing",
+    description:
+      "Basal clutter here usually means rib or lung interference. Heel-toe the probe and reduce basal TGC instead of chasing MI.",
+    left: "56%",
+    top: "74%",
+  },
+];
+
+const pitfallReferenceImage = {
+  src: "content/screenshot.png",
+  alt: "Perfusion still frame with three interactive pitfall markers.",
+};
+
 const selection = {
   machineId: null,
   bubbleId: null,
@@ -579,7 +619,7 @@ function renderPitfalls() {
       '<p class="placeholder">Pick a machine and an agent to surface pitfalls.</p>';
     return;
   }
-  els.pitfallsGrid.innerHTML = protocol.pitfalls
+  const cards = protocol.pitfalls
     .map(
       (pitfall) => `
       <article class="pitfall-card">
@@ -590,14 +630,68 @@ function renderPitfalls() {
     `,
     )
     .join("");
+  els.pitfallsGrid.innerHTML = `
+    ${renderPitfallFigure()}
+    ${cards}
+  `;
+}
+
+function renderPitfallFigure() {
+  const hotspots = pitfallHotspots
+    .map(
+      (hotspot, index) => `
+        <div
+          class="pitfall-hotspot"
+          style="left: ${hotspot.left}; top: ${hotspot.top};"
+        >
+          <button
+            class="pitfall-hotspot__button"
+            type="button"
+            aria-label="${hotspot.title}"
+            aria-describedby="${hotspot.id}"
+          >
+            <span>${index + 1}</span>
+          </button>
+          <div class="pitfall-hotspot__tooltip" id="${hotspot.id}">
+            <h3>${hotspot.title}</h3>
+            <p>${hotspot.description}</p>
+          </div>
+        </div>
+      `,
+    )
+    .join("");
+
+  return `
+    <article class="pitfall-figure">
+      <div class="pitfall-figure__copy">
+        <div class="badge">Hover the circles</div>
+        <h3>Annotated pitfalls reference frame</h3>
+        <p>
+          This demo overlay shows how still images can become teaching surfaces.
+          Hover or focus any circle to reveal the pitfall explainer.
+        </p>
+      </div>
+      <div class="pitfall-annotator">
+        <img
+          class="pitfall-annotator__image"
+          src="${pitfallReferenceImage.src}"
+          alt="${pitfallReferenceImage.alt}"
+        />
+        ${hotspots}
+      </div>
+    </article>
+  `;
 }
 
 function renderQuality() {
   if (!els.qualityData) return;
   const protocol = getActiveProtocol();
+  const example = renderFeaturedExample();
   if (!protocol) {
-    els.qualityData.innerHTML =
-      '<p class="placeholder">Select a machine-agent pairing to load data.</p>';
+    els.qualityData.innerHTML = `
+      ${example}
+      <p class="placeholder">Select a machine-agent pairing to load data.</p>
+    `;
     return;
   }
   const metrics = protocol.quality.metrics
@@ -619,8 +713,33 @@ function renderQuality() {
     </div>
   `;
   els.qualityData.innerHTML = `
+    ${example}
     ${metrics}
     ${pearls}
+  `;
+}
+
+function renderFeaturedExample() {
+  return `
+    <article class="quality-card quality-card--feature">
+      <div class="quality-feature">
+        <div class="quality-feature__copy">
+          <div class="badge">Featured loop</div>
+          <h3>${featuredExample.title}</h3>
+          <p>${featuredExample.caption}</p>
+        </div>
+        <video
+          class="quality-feature__video"
+          controls
+          loop
+          playsinline
+          preload="metadata"
+        >
+          <source src="${featuredExample.src}" type="${featuredExample.type}" />
+          Your browser does not support embedded video playback.
+        </video>
+      </div>
+    </article>
   `;
 }
 
