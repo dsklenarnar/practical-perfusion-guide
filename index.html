@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Practical Perfusion Guide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles/main.css" />
+  </head>
+  <body>
+    <div class="gate" id="access-gate" aria-modal="true" role="dialog">
+      <form class="gate__panel" id="access-form">
+        <p class="eyebrow">Preview mode</p>
+        <h2>Password required</h2>
+        <p>
+          This work-in-progress guide is gated while we iterate. Enter the password to unlock the walkthrough.
+        </p>
+        <label for="access-input">Access code</label>
+        <input id="access-input" name="access-input" type="password" autocomplete="off" required />
+        <p class="gate__error" id="access-error" role="alert" hidden>Incorrect code. Try again.</p>
+        <button class="btn btn--primary" type="submit">Enter guide</button>
+        <p class="gate__hint">Tip: configure the code in <code>scripts/app.js</code> before publishing.</p>
+      </form>
+    </div>
+
+    <header class="hero">
+      <div class="hero__content">
+        <p class="eyebrow">Continuous Infusion • Echocardiography</p>
+        <h1>Practical Perfusion Playbook</h1>
+        <p class="lede">
+          Cut through the dogma. Pick your hardware, pick your bubbles, and get a
+          step-by-step infusion protocol in seconds. Tabs keep the alternative
+          settings close at hand so you can compare or troubleshoot live.
+        </p>
+        <div class="hero__cta">
+          <button id="start-flow" class="btn btn--primary">
+            Start the walkthrough
+          </button>
+          <button id="show-basics" class="btn btn--ghost">
+            Review infusion basics
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="story-layout">
+        <aside class="story-nav" aria-label="Section guide">
+          <p class="eyebrow">Guide</p>
+          <ol id="story-nav-list">
+            <li><button data-target="background" class="story-link is-active" type="button">Background</button></li>
+            <li><button data-target="machine-heading" class="story-link" type="button">Machine &amp; probe</button></li>
+            <li><button data-target="bubble-heading" class="story-link" type="button">Ultrasound enhancing agent</button></li>
+            <li><button data-target="pitfalls-heading" class="story-link" type="button">Common pitfalls</button></li>
+            <li><button data-target="quality-heading" class="story-link" type="button">Quality data</button></li>
+          </ol>
+          <div class="progress" id="story-progress">
+            <div class="progress__bar"></div>
+          </div>
+        </aside>
+
+        <div class="story-content">
+      <section id="background" class="panel flow animate" aria-labelledby="background-heading">
+        <p class="eyebrow">Section 0</p>
+        <h2 id="background-heading">Background</h2>
+        <p>
+          Start with the why. Continuous infusion contrast is practical—here is the distilled evidence, with
+          details tucked away until you need them mid-study.
+        </p>
+        <div id="background-topics" class="disclosure-grid"></div>
+      </section>
+
+      <section class="panel flow animate" aria-labelledby="machine-heading">
+        <div class="panel__header">
+          <div>
+            <p class="eyebrow">Section 1</p>
+            <h2 id="machine-heading">Machine &amp; probe</h2>
+          </div>
+          <div class="panel__action">
+            <button class="btn btn--ghost" id="toggle-machine-compare">
+              Compare presets
+            </button>
+          </div>
+        </div>
+        <p class="lede">
+          Choose the scanner parked at the bedside. The detail panel loads probe guidance, positioning pearls,
+          and—when paired with an agent—the full infusion walkthrough.
+        </p>
+        <div id="machine-grid" class="option-grid" role="list"></div>
+        <div id="machine-compare" class="compare" hidden>
+          <table>
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Philips EPIQ</th>
+                <th>GE Vivid Pioneer</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>Contrast preset</th>
+                <td>Cardiac CnTI <em>(MFI off)</em></td>
+                <td>Adult Contrast + B-Flow Mix</td>
+              </tr>
+              <tr>
+                <th>Transmit frequency</th>
+                <td>1.0&nbsp;MHz</td>
+                <td>1.3&nbsp;MHz</td>
+              </tr>
+              <tr>
+                <th>MI target</th>
+                <td>0.08&nbsp;–&nbsp;0.12</td>
+                <td>0.05&nbsp;–&nbsp;0.10</td>
+              </tr>
+              <tr>
+                <th>Infusion dial</th>
+                <td>SmartInfuse slider</td>
+                <td>Acoustic Output knob</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <article id="machine-detail" class="detail-card" aria-live="polite">
+          <p class="placeholder">Tap a machine to load probe tips and knobology.</p>
+        </article>
+      </section>
+
+      <section class="panel flow animate" aria-labelledby="bubble-heading">
+        <div class="panel__header">
+          <div>
+            <p class="eyebrow">Section 2</p>
+            <h2 id="bubble-heading">Ultrasound enhancing agent</h2>
+          </div>
+          <p>
+            Definity and Lumason behave differently under infusion—pick what is spiked and get dose/prep specifics.
+          </p>
+        </div>
+        <div id="bubble-grid" class="option-grid" role="list"></div>
+        <article id="bubble-detail" class="detail-card" aria-live="polite">
+          <p class="placeholder">Select an agent to reveal prep, dilution, and sustainment steps.</p>
+        </article>
+      </section>
+
+      <section class="panel flow animate" aria-labelledby="pitfalls-heading">
+        <div class="panel__header">
+          <div>
+            <p class="eyebrow">Section 3</p>
+            <h2 id="pitfalls-heading">Common pitfalls</h2>
+          </div>
+        </div>
+        <p>
+          Once a machine-agent combo is selected, this section lists the most frequent blockers and rapid fixes.
+        </p>
+        <div id="pitfalls-grid" class="pitfall-grid" aria-live="polite">
+          <p class="placeholder">Pick a machine and an agent to surface pitfalls.</p>
+        </div>
+      </section>
+
+      <section class="panel flow animate" aria-labelledby="quality-heading">
+        <div class="panel__header">
+          <div>
+            <p class="eyebrow">Section 4</p>
+            <h2 id="quality-heading">Quality data</h2>
+          </div>
+          <button class="btn btn--ghost" id="download-checklist">
+            Copy universal checklist
+          </button>
+        </div>
+        <p>
+          Combine quantitative guardrails (arrival times, replenishment, MI windows) with the evergreen bedside checklist.
+        </p>
+        <div id="quality-data" class="quality-grid" aria-live="polite">
+          <p class="placeholder">Select a machine-agent pairing to load data.</p>
+        </div>
+        <ul id="checklist" class="checklist"></ul>
+      </section>
+
+      <section class="panel flow animate" aria-labelledby="roadmap-heading">
+        <h2 id="roadmap-heading">Roadmap</h2>
+        <ul class="roadmap">
+          <li>
+            Annotated cine loops with tappable hotspots for common artifacts.
+          </li>
+          <li>
+            Live dose tracking overlay, with reminders to nudge infusion up/down.
+          </li>
+          <li>
+            Peer-sourced troubleshooting cards you can swipe through mid-study.
+          </li>
+        </ul>
+      </section>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>Built for bedside pragmatists. Feedback? Drop a note in the repo.</p>
+    </footer>
+
+    <script src="scripts/app.js" type="module"></script>
+  </body>
+</html>
