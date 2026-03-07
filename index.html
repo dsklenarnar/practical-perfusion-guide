@@ -56,8 +56,11 @@
             <li><button data-target="background" class="story-link is-active" type="button">Background</button></li>
             <li><button data-target="machine-heading" class="story-link" type="button">Machine &amp; probe</button></li>
             <li><button data-target="bubble-heading" class="story-link" type="button">Ultrasound enhancing agent</button></li>
+            <li><button data-target="checklist-heading" class="story-link" type="button">Checklist</button></li>
             <li><button data-target="pitfalls-heading" class="story-link" type="button">Common pitfalls</button></li>
             <li><button data-target="quality-heading" class="story-link" type="button">Quality data</button></li>
+            <li><button data-target="stress-heading" class="story-link" type="button">Stress echo</button></li>
+            <li><button data-target="references-heading" class="story-link" type="button">References</button></li>
           </ol>
           <div class="progress" id="story-progress">
             <div class="progress__bar"></div>
@@ -146,10 +149,29 @@
         </article>
       </section>
 
-      <section class="panel flow animate" aria-labelledby="pitfalls-heading">
+      <section class="panel flow animate" aria-labelledby="checklist-heading">
         <div class="panel__header">
           <div>
             <p class="eyebrow">Section 3</p>
+            <h2 id="checklist-heading">Checklist</h2>
+          </div>
+          <button class="btn btn--ghost" id="download-checklist">
+            Copy universal checklist
+          </button>
+        </div>
+        <p>
+          Use this as a pre-flight equipment and workflow check before you start the infusion.
+        </p>
+        <details class="disclosure checklist-disclosure" open>
+          <summary>Setup and supplies</summary>
+          <ul id="checklist" class="checklist"></ul>
+        </details>
+      </section>
+
+      <section class="panel flow animate" aria-labelledby="pitfalls-heading">
+        <div class="panel__header">
+          <div>
+            <p class="eyebrow">Section 4</p>
             <h2 id="pitfalls-heading">Common pitfalls</h2>
           </div>
         </div>
@@ -164,20 +186,28 @@
       <section class="panel flow animate" aria-labelledby="quality-heading">
         <div class="panel__header">
           <div>
-            <p class="eyebrow">Section 4</p>
+            <p class="eyebrow">Section 5</p>
             <h2 id="quality-heading">Quality data</h2>
           </div>
-          <button class="btn btn--ghost" id="download-checklist">
-            Copy universal checklist
-          </button>
         </div>
         <p>
-          Combine quantitative guardrails (arrival times, replenishment, MI windows) with the evergreen bedside checklist.
+          Combine quantitative guardrails (arrival times, replenishment, MI windows) with the acquisition choices above.
         </p>
         <div id="quality-data" class="quality-grid" aria-live="polite">
           <p class="placeholder">Select a machine-agent pairing to load data.</p>
         </div>
-        <ul id="checklist" class="checklist"></ul>
+      </section>
+
+      <section class="panel flow animate" aria-labelledby="stress-heading">
+        <p class="eyebrow">Section 6</p>
+        <h2 id="stress-heading">Stress echo</h2>
+        <div id="stress-echo" class="resource-grid"></div>
+      </section>
+
+      <section class="panel flow animate" aria-labelledby="references-heading">
+        <p class="eyebrow">Section 7</p>
+        <h2 id="references-heading">References</h2>
+        <div id="references" class="resource-grid"></div>
       </section>
 
       <section class="panel flow animate" aria-labelledby="roadmap-heading">

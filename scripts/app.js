@@ -1,5 +1,6 @@
 const ACCESS_CODE = "perfusion-preview";
 const ACCESS_STORAGE_KEY = "practical-perfusion-access";
+const CHECKLIST_STORAGE_KEY = "practical-perfusion-checklist";
 
 const backgroundTopics = [
   {
@@ -416,11 +417,132 @@ const protocols = [
 const checklistItems = [
   "Time-out: confirm agent, dose, IV patency, and absence of shunts.",
   "20G or larger IV in the right antecubital with dedicated line—no shared drips.",
+  "Continuous infusion pump or syringe pump dedicated to the contrast line.",
+  "Microbore tubing plus a three-way stopcock to minimize dead space.",
+  "Agent-specific dilution prepared, labeled, and connected before imaging starts.",
+  "Normal saline flush syringes ready at the bedside.",
+  "Contrast worksheet or capture sheet for MI, infusion rate, and flash timing.",
   "Label the infusion syringe/bag with agent, concentration, and start time.",
   "Set a timer for bubble agitation (shake syringe every 3–4 minutes).",
   "Capture a reference loop before infusion for baseline comparison.",
   "Log MI, infusion rate, and any flash maneuvers directly on the worksheet.",
   "Export one optimized clip per view plus a sweep showing replenishment.",
+];
+
+const stressEchoItems = [
+  {
+    title: "Why perfusion during stress",
+    description:
+      "Stress echo is where myocardial contrast earns its keep. Perfusion defects can appear before obvious wall motion changes, especially when tachycardia shortens your window and apical definition degrades.",
+  },
+  {
+    title: "Acquisition principle",
+    description:
+      "Keep the infusion steady as workload rises, resist the urge to chase every brightness change, and preserve frame rate by narrowing the sector. The target is reproducible replenishment across stress stages rather than a single dramatic flash sequence.",
+  },
+  {
+    title: "What to document",
+    description:
+      "Record the stress stage, heart rate, MI, infusion rate, and whether a flash-replenishment sequence was used. A useful stress study is not just visually impressive; it is traceable enough that someone else can understand how the image was acquired.",
+  },
+  {
+    title: "How this site should be used at stress",
+    description:
+      "Treat the machine and agent pathways above as your baseline acquisition protocol, then simplify aggressively as heart rate rises: narrower sector, minimal knob changes, and one reproducible flash-replenishment sequence per stage when clinically useful.",
+  },
+];
+
+const referenceSections = [
+  {
+    title: "Guidelines",
+    items: [
+      {
+        label:
+          "ASE consensus statement on the clinical applications of ultrasonic contrast agents in echocardiography",
+        href:
+          "https://www.asecho.org/guideline/american-society-of-echocardiography-consensus-statement-on-the-clinical-applications-of-ultrasonic-contrast-agents-in-echocardiography/",
+        source: "ASE",
+        note:
+          "Operational foundation for UEA use, lab workflow, and contrast-specific imaging practice.",
+      },
+      {
+        label:
+          "EAE/EACVI recommendations for contrast echocardiography: update 2009",
+        href:
+          "https://www.escardio.org/static-file/Escardio/Subspecialty/EACVI/position-papers/EAE-_recommendations-for-contrast-echo.pdf",
+        source: "ESC / EACVI PDF",
+        note:
+          "European reference document covering LV opacification, myocardial perfusion, and acquisition principles.",
+      },
+      {
+        label:
+          "ASE guidelines for performance, interpretation, and application of stress echocardiography in ischemic heart disease",
+        href:
+          "https://www.asecho.org/guideline/guidelines-for-performance-interpretation-and-application-of-stress-echocardiography-in-ischemic-heart-disease/",
+        source: "ASE",
+        note:
+          "Stress-echo framework with specific mention of ultrasound enhancing agents and perfusion imaging.",
+      },
+    ],
+  },
+  {
+    title: "Canonical MCE acquisition papers",
+    items: [
+      {
+        label:
+          "Real-time myocardial blood flow imaging in normal human beings with the use of myocardial contrast echocardiography",
+        href: "https://pubmed.ncbi.nlm.nih.gov/11447415/",
+        source: "PubMed",
+        note:
+          "Porter et al. showed continuous-infusion real-time MCE could quantify myocardial blood flow reserve in humans.",
+      },
+      {
+        label:
+          "Real-time assessment of myocardial perfusion and wall motion during bicycle and treadmill exercise echocardiography",
+        href: "https://pubmed.ncbi.nlm.nih.gov/11693746/",
+        source: "PubMed",
+        note:
+          "Wei et al. established low-MI real-time exercise perfusion imaging as clinically feasible and comparable with SPECT.",
+      },
+      {
+        label:
+          "Myocardial perfusion imaging with contrast ultrasound",
+        href: "https://pubmed.ncbi.nlm.nih.gov/20159645/",
+        source: "PubMed",
+        note:
+          "Porter and Xie review the microbubble physics, destruction-replenishment model, and continuous-infusion workflow.",
+      },
+      {
+        label:
+          "Rapid detection of coronary artery stenoses with real-time perfusion echocardiography during regadenoson stress",
+        href: "https://pubmed.ncbi.nlm.nih.gov/21946702/",
+        source: "PubMed",
+        note:
+          "Demonstrates a practical continuous-infusion stress protocol with perfusion outperforming wall motion sensitivity.",
+      },
+    ],
+  },
+  {
+    title: "Methodology reviews",
+    items: [
+      {
+        label:
+          "Assessment of myocardial perfusion with real-time myocardial contrast echocardiography: methodology and clinical applications",
+        href: "https://pubmed.ncbi.nlm.nih.gov/16171719/",
+        source: "PubMed",
+        note:
+          "A concise review of acquisition mechanics and clinical interpretation that fits well with this site's teaching goals.",
+      },
+      {
+        label:
+          "Clinical applications of contrast echocardiography",
+        href: "https://pubmed.ncbi.nlm.nih.gov/15698558/",
+        source: "PubMed",
+        note:
+          "Broad review useful for orienting new learners before they move into stress and perfusion-specific workflows.",
+      },
+    ],
+  },
 ];
 
 const featuredExample = {
@@ -480,6 +602,8 @@ const els = {
   pitfallsGrid: document.getElementById("pitfalls-grid"),
   qualityData: document.getElementById("quality-data"),
   checklist: document.getElementById("checklist"),
+  stressEcho: document.getElementById("stress-echo"),
+  references: document.getElementById("references"),
 };
 
 function init() {
@@ -491,6 +615,8 @@ function init() {
   renderPitfalls();
   renderQuality();
   renderChecklist();
+  renderStressEcho();
+  renderReferences();
   setupGate();
   wireButtons();
   initStoryNav();
@@ -745,9 +871,99 @@ function renderFeaturedExample() {
 
 function renderChecklist() {
   if (!els.checklist) return;
+  const savedState = loadChecklistState();
   els.checklist.innerHTML = checklistItems
-    .map((item) => `<li>${item}</li>`)
+    .map(
+      (item, index) => `
+        <li>
+          <label class="checklist-item">
+            <input
+              class="checklist-item__checkbox"
+              type="checkbox"
+              data-checklist-index="${index}"
+              ${savedState[index] ? "checked" : ""}
+            />
+            <span>${item}</span>
+          </label>
+        </li>
+      `,
+    )
     .join("");
+  const checkboxes = els.checklist.querySelectorAll("[data-checklist-index]");
+  checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener("change", handleChecklistToggle);
+  });
+}
+
+function renderStressEcho() {
+  if (!els.stressEcho) return;
+  els.stressEcho.innerHTML = stressEchoItems
+    .map(
+      (item) => `
+        <article class="resource-card">
+          <h3>${item.title}</h3>
+          <p>${item.description}</p>
+        </article>
+      `,
+    )
+    .join("");
+}
+
+function renderReferences() {
+  if (!els.references) return;
+  els.references.innerHTML = referenceSections
+    .map(
+      (section) => `
+        <article class="resource-card">
+          <h3>${section.title}</h3>
+          <ul>
+            ${section.items
+              .map(
+                (item) => `
+                  <li>
+                    <a href="${item.href}" target="_blank" rel="noreferrer">${item.label}</a>
+                    <a
+                      class="resource-link"
+                      href="${item.href}"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Original source (${item.source})
+                    </a>
+                    <span class="resource-note">${item.note}</span>
+                  </li>
+                `,
+              )
+              .join("")}
+          </ul>
+        </article>
+      `,
+    )
+    .join("");
+}
+
+function loadChecklistState() {
+  try {
+    const saved = window.localStorage.getItem(CHECKLIST_STORAGE_KEY);
+    return saved ? JSON.parse(saved) : {};
+  } catch (error) {
+    return {};
+  }
+}
+
+function handleChecklistToggle(event) {
+  const target = event.currentTarget;
+  if (!(target instanceof HTMLInputElement)) return;
+  const currentState = loadChecklistState();
+  currentState[target.dataset.checklistIndex] = target.checked;
+  try {
+    window.localStorage.setItem(
+      CHECKLIST_STORAGE_KEY,
+      JSON.stringify(currentState),
+    );
+  } catch (error) {
+    return;
+  }
 }
 
 function renderTechnique(protocol) {
