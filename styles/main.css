@@ -678,6 +678,12 @@ main {
   color: var(--muted);
 }
 
+.site-footer__disclaimer {
+  max-width: 720px;
+  margin: 12px auto 0;
+  font-size: 0.92rem;
+}
+
 .animate {
   opacity: 0;
   transform: translateY(24px);

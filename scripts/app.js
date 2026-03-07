@@ -4,33 +4,43 @@ const CHECKLIST_STORAGE_KEY = "practical-perfusion-checklist";
 
 const backgroundTopics = [
   {
-    title: "Myth: Perfusion contrast is finicky",
+    title: "Why myocardial contrast echocardiography is practical",
     summary:
-      "Perfusion protocols fail mostly from inconsistent infusion, not fragile bubbles.",
+      "The ASE contrast consensus statement and the EAE/EACVI recommendations both frame contrast echocardiography as a workflow tool, not a niche rescue maneuver. In practice, most failed perfusion studies reflect inconsistent setup, unstable infusion, or excessive mid-study knob changes rather than a limitation of the microbubbles themselves.",
     bullets: [
-      "Steady-state infusion keeps myocardium saturated without constant boluses.",
-      "Modern scanners automatically scale MI in 0.01 increments—use it liberally.",
-      "Prep errors (under-shaken vials, foamy tubing) explain >70% of failed studies.",
+      "Low-MI contrast-specific imaging allows simultaneous attention to LV cavity opacification and myocardial signal without depending on repeated bolus timing.",
+      "Continuous infusion reduces one of the biggest workflow problems in stress echo: having to reacquire windows every time the bubble intensity surges or disappears.",
+      "A standardized setup with a dedicated IV, microbore tubing, and a reproducible starting infusion rate matters more than constantly searching for a perfect proprietary preset.",
     ],
   },
   {
-    title: "Why continuous infusion beats bolus",
+    title: "Why continuous infusion became the preferred teaching model",
     summary:
-      "Infusion keeps LV cavity bright while MI stays low, so you can flash when needed.",
+      "The real-time MCE literature from Porter, Wei, Kaul, Senior, and others is built around the same core logic: maintain a steady intravascular microbubble concentration, image at low mechanical index, and use brief high-energy impulses to analyze replenishment. That framework is much easier to teach and reproduce with infusion than with serial boluses.",
     bullets: [
-      "Minimal hemodynamic impact: <2 mL/min infusion equals a maintenance IV drip.",
-      "Predictable replenishment curves make quality tracking (arrival, peak, decay) easy.",
-      "No waiting for the next bolus—flash, pause 8 seconds, resume.",
+      "Infusion creates a stable baseline, so changes after flash are more likely to represent replenishment kinetics rather than random variation in contrast delivery.",
+      "It also improves team communication because the sonographer, nurse, and physician can all describe the study in terms of MI, infusion rate, and flash timing.",
+      "At stress, infusion is especially helpful because it preserves continuity while heart rate is changing and the available acquisition window is short.",
     ],
   },
   {
-    title: "Evidence snapshot",
+    title: "What the stress echo evidence adds",
     summary:
-      "High-volume centers show reproducible perfusion imaging across scanners.",
+      "Stress MCE papers showed that real-time perfusion imaging could be performed during exercise or vasodilator stress and that perfusion abnormalities may appear before obvious wall motion changes. That is the practical value proposition for sonographers: better diagnostic confidence when image quality and timing are otherwise working against you.",
     bullets: [
-      "Cleveland Clinic and UofL echo labs published similar MI windows (0.05–0.12).",
-      "Contrast lab downtime dropped 30% after standardizing infusion checklists.",
-      "Apical perfusion scoring improved from 68% to 91% when teams logged QA metrics.",
+      "The classic exercise MCE work by Wei and colleagues demonstrated that perfusion and wall motion can be assessed together in real time during stress acquisition.",
+      "Later stress-imaging studies using contemporary contrast-specific imaging reinforced that a low-MI perfusion approach can improve sensitivity for coronary disease when compared with wall motion assessment alone.",
+      "For day-to-day lab practice, the implication is straightforward: sonographers need a reliable acquisition method more than a dramatic one, and the method has to survive motion, tachycardia, and technically difficult patients.",
+    ],
+  },
+  {
+    title: "Where this guide fits",
+    summary:
+      "This site is intentionally focused on bedside acquisition rather than comprehensive interpretation. It translates the guideline and methodology literature into a sonographer-facing workflow: how to prepare the agent, hold a stable infusion, set the scanner, recognize common pitfalls, and capture loops that are still useful when reviewed later by another reader.",
+    bullets: [
+      "The scanner and agent sections prioritize repeatable knobology over vendor marketing language.",
+      "The checklist, hotspot image, and quality section are meant to reduce avoidable technical failure before interpretation even starts.",
+      "The references section points back to the original guidance and papers so the educational claims on the site remain anchored to primary sources.",
     ],
   },
 ];
@@ -79,6 +89,8 @@ const bubbles = [
     id: "definity",
     name: "Definity",
     badge: "Durable / High signal",
+    labelingUrl: "https://www.definityimaging.com/",
+    labelingLabel: "Official prescribing information",
     summary:
       "Robust microbubble with predictable acoustic response. Handles aggressive flash impulses.",
     prep: [
@@ -96,6 +108,8 @@ const bubbles = [
     id: "lumason",
     name: "Lumason",
     badge: "Low viscosity",
+    labelingUrl: "https://lumason.com/support/",
+    labelingLabel: "Official prescribing information",
     summary:
       "Ready-to-use sulfur hexafluoride bubble with softer response—perfect for fragile LV segments.",
     prep: [
@@ -724,6 +738,9 @@ function renderBubbleDetail() {
   els.bubbleDetail.innerHTML = `
     <h3>${bubble.name}</h3>
     <p>${bubble.summary}</p>
+    <p>
+      <a href="${bubble.labelingUrl}" target="_blank" rel="noreferrer">${bubble.labelingLabel}</a>
+    </p>
     <div class="split">
       <div>
         <h4>Prep steps</h4>
