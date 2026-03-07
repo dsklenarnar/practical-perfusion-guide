@@ -555,6 +555,14 @@ const referenceSections = [
         note:
           "Broad review useful for orienting new learners before they move into stress and perfusion-specific workflows.",
       },
+      {
+        label:
+          "Current recommendations for contrast echocardiography: practical guidance from the British Society of Echocardiography",
+        href: "https://pmc.ncbi.nlm.nih.gov/articles/PMC5440724/",
+        source: "PMC",
+        note:
+          "Practical artifact-focused guidance on attenuation, shadowing, swirling, blooming, and day-to-day troubleshooting in contrast imaging.",
+      },
     ],
   },
 ];
@@ -570,17 +578,17 @@ const featuredExample = {
 const pitfallHotspots = [
   {
     id: "hotspot-1",
-    title: "Apical blooming",
+    title: "Apical blooming / near-field destruction",
     description:
-      "Near-field signal is too hot here. Back the gain down a few clicks or lower infusion before it washes out the apex.",
+      "Literature on low-MI perfusion imaging repeatedly warns that the apex can look abnormal simply because near-field signal is too hot or bubbles are being destroyed too aggressively. Reduce gain or infusion before calling this a defect.",
     left: "31%",
     top: "24%",
   },
   {
     id: "hotspot-2",
-    title: "Lateral wall dropout",
+    title: "Lateral wall dropout / attenuation",
     description:
-      "This edge can disappear when focus and sector width are off. Narrow the sector and bring focus back toward mid-LV.",
+      "Apparent lateral wall hypoenhancement may reflect attenuation rather than true hypoperfusion. Reposition the window, narrow the sector, and reassess cavity brightness before interpreting the segment.",
     left: "66%",
     top: "44%",
   },
@@ -588,7 +596,7 @@ const pitfallHotspots = [
     id: "hotspot-3",
     title: "Basal shadowing",
     description:
-      "Basal clutter here usually means rib or lung interference. Heel-toe the probe and reduce basal TGC instead of chasing MI.",
+      "Basal dropout is commonly caused by rib or lung interference in practical MCE acquisition. Heel-toe the probe and trim basal TGC instead of chasing MI or overcalling a fixed perfusion defect.",
     left: "56%",
     top: "74%",
   },
@@ -598,6 +606,44 @@ const pitfallReferenceImage = {
   src: "content/screenshot.png",
   alt: "Perfusion still frame with three interactive pitfall markers.",
 };
+
+const artifactTeachingCards = [
+  {
+    title: "Attenuation and shadowing",
+    signal:
+      "A myocardial segment looks dark because the cavity or adjacent tissue is over-attenuating the beam, often in basal or lateral walls.",
+    fix:
+      "The MCE reviews and guideline documents recommend changing the window first, then reducing overall contrast intensity or gain. A dark segment that improves with repositioning is an artifact until proven otherwise.",
+  },
+  {
+    title: "Blooming and cavity overgain",
+    signal:
+      "The LV cavity is so bright that endocardial borders blur and myocardium is partly obscured, especially near the apex or in the near field.",
+    fix:
+      "Back down gain or infusion and keep MI low. The literature is clear that myocardial perfusion cannot be judged reliably when cavity signal overwhelms the myocardium.",
+  },
+  {
+    title: "Swirling from incomplete steady state",
+    signal:
+      "Contrast density changes beat to beat, with patchy cavity fill and inconsistent myocardial signal.",
+    fix:
+      "Re-establish a steady infusion before interpreting replenishment. Real-time MCE papers emphasize that destruction-replenishment logic only works when microbubble concentration is stable.",
+  },
+  {
+    title: "False apical defect",
+    signal:
+      "The apex looks under-opacified even though the rest of the ventricle fills well and there is no coherent territorial pattern.",
+    fix:
+      "Think near-field destruction, gain, or focal geometry before ischemia. Lower power, rebalance gain, and reacquire the view.",
+  },
+  {
+    title: "Rib or lung artifact",
+    signal:
+      "Basal or lateral dropout changes with breathing or probe angle and does not behave like a physiologic replenishment abnormality.",
+    fix:
+      "Move the transducer, heel-toe, or reacquire in a different interspace. The practical guidance literature consistently treats moving shadow as artifact, not perfusion loss.",
+    },
+];
 
 const selection = {
   machineId: null,
@@ -757,12 +803,7 @@ function renderBubbleDetail() {
 function renderPitfalls() {
   if (!els.pitfallsGrid) return;
   const protocol = getActiveProtocol();
-  if (!protocol) {
-    els.pitfallsGrid.innerHTML =
-      '<p class="placeholder">Pick a machine and an agent to surface pitfalls.</p>';
-    return;
-  }
-  const cards = protocol.pitfalls
+  const cards = (protocol?.pitfalls ?? artifactTeachingCards)
     .map(
       (pitfall) => `
       <article class="pitfall-card">
