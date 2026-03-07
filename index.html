@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Practical Perfusion Guide</title>
+    <title>Practical Perfusion Playbook</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -60,16 +60,68 @@
           <p class="eyebrow">Playbook</p>
           <ol id="story-nav-list">
             <li><button data-target="background" class="story-link is-active" type="button">Background</button></li>
-            <li><button data-target="machine-heading" class="story-link" type="button">Machine &amp; probe</button></li>
-            <li><button data-target="bubble-heading" class="story-link" type="button">Ultrasound enhancing agent</button></li>
+            <li><button data-target="machine-heading" class="story-link" type="button">Select Machine and Probe</button></li>
+            <li><button data-target="bubble-heading" class="story-link" type="button">Select UEA</button></li>
             <li><button data-target="checklist-heading" class="story-link" type="button">Checklist</button></li>
             <li><button data-target="pitfalls-heading" class="story-link" type="button">Common pitfalls</button></li>
-            <li><button data-target="quality-heading" class="story-link" type="button">Quality data</button></li>
+            <li><button data-target="quality-heading" class="story-link" type="button">Quality Data Examples</button></li>
             <li><button data-target="stress-heading" class="story-link" type="button">Stress echo</button></li>
             <li><button data-target="references-heading" class="story-link" type="button">References</button></li>
           </ol>
-          <div class="progress" id="story-progress">
-            <div class="progress__bar"></div>
+          <div class="flow-progress" aria-hidden="true">
+            <div class="flow-progress__label">Progress</div>
+            <svg
+              class="flow-progress__svg"
+              viewBox="0 0 220 140"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <defs>
+                <mask id="flow-progress-mask">
+                  <rect class="flow-progress__mask" x="0" y="0" width="0" height="140" fill="white" />
+                </mask>
+              </defs>
+              <g class="flow-progress__base">
+                <path d="M10 70 C42 70 70 70 94 70" />
+                <path d="M94 70 C108 70 118 58 130 44" />
+                <path d="M94 70 C108 70 118 82 130 96" />
+                <path d="M130 44 C142 34 154 28 166 22" />
+                <path d="M130 44 C142 48 154 52 168 58" />
+                <path d="M130 96 C142 90 154 84 168 78" />
+                <path d="M130 96 C142 104 154 112 168 120" />
+                <path d="M166 22 C178 18 190 14 206 10" />
+                <path d="M166 22 C178 24 188 28 200 34" />
+                <path d="M168 58 C180 52 192 48 206 44" />
+                <path d="M168 58 C180 62 192 68 206 74" />
+                <path d="M168 78 C180 72 192 68 206 64" />
+                <path d="M168 78 C180 84 192 90 206 96" />
+                <path d="M168 120 C180 112 192 108 206 104" />
+                <path d="M168 120 C180 122 192 128 206 134" />
+                <path d="M188 28 C196 22 204 18 214 16" />
+                <path d="M192 68 C200 64 208 60 216 58" />
+                <path d="M192 90 C200 96 208 102 216 108" />
+              </g>
+              <g class="flow-progress__fill" mask="url(#flow-progress-mask)">
+                <path d="M10 70 C42 70 70 70 94 70" />
+                <path d="M94 70 C108 70 118 58 130 44" />
+                <path d="M94 70 C108 70 118 82 130 96" />
+                <path d="M130 44 C142 34 154 28 166 22" />
+                <path d="M130 44 C142 48 154 52 168 58" />
+                <path d="M130 96 C142 90 154 84 168 78" />
+                <path d="M130 96 C142 104 154 112 168 120" />
+                <path d="M166 22 C178 18 190 14 206 10" />
+                <path d="M166 22 C178 24 188 28 200 34" />
+                <path d="M168 58 C180 52 192 48 206 44" />
+                <path d="M168 58 C180 62 192 68 206 74" />
+                <path d="M168 78 C180 72 192 68 206 64" />
+                <path d="M168 78 C180 84 192 90 206 96" />
+                <path d="M168 120 C180 112 192 108 206 104" />
+                <path d="M168 120 C180 122 192 128 206 134" />
+                <path d="M188 28 C196 22 204 18 214 16" />
+                <path d="M192 68 C200 64 208 60 216 58" />
+                <path d="M192 90 C200 96 208 102 216 108" />
+              </g>
+            </svg>
           </div>
         </aside>
 
@@ -92,7 +144,7 @@
         <div class="panel__header">
           <div>
             <p class="eyebrow">Section 1</p>
-            <h2 id="machine-heading">Machine &amp; probe</h2>
+            <h2 id="machine-heading">Select Machine and Probe</h2>
           </div>
           <div class="panel__action">
             <button class="btn btn--ghost" id="toggle-machine-compare">
@@ -147,7 +199,7 @@
         <div class="panel__header">
           <div>
             <p class="eyebrow">Section 2</p>
-            <h2 id="bubble-heading">Ultrasound enhancing agent</h2>
+            <h2 id="bubble-heading">Select UEA</h2>
           </div>
           <p>
             Definity and Lumason behave differently under infusion—pick what is spiked and get dose/prep specifics.
@@ -173,7 +225,7 @@
           Use this as a pre-flight equipment and workflow check before you start the infusion.
         </p>
         <details class="disclosure checklist-disclosure" open>
-          <summary>Setup and supplies</summary>
+          <summary>Supplies and administrative setup</summary>
           <ul id="checklist" class="checklist"></ul>
         </details>
       </section>
@@ -200,15 +252,13 @@
         <div class="panel__header">
           <div>
             <p class="eyebrow">Section 5</p>
-            <h2 id="quality-heading">Quality data</h2>
+            <h2 id="quality-heading">Quality Data Examples</h2>
           </div>
         </div>
         <p>
-          Combine quantitative guardrails (arrival times, replenishment, MI windows) with the acquisition choices above.
+          Use this section to judge whether the acquisition is technically sound before interpreting perfusion.
         </p>
-        <div id="quality-data" class="quality-grid" aria-live="polite">
-          <p class="placeholder">Select a machine-agent pairing to load data.</p>
-        </div>
+        <div id="quality-data" class="quality-grid" aria-live="polite"></div>
       </section>
 
       <section class="panel flow animate" aria-labelledby="stress-heading">
@@ -223,20 +273,6 @@
         <div id="references" class="resource-grid"></div>
       </section>
 
-      <section class="panel flow animate" aria-labelledby="roadmap-heading">
-        <h2 id="roadmap-heading">Roadmap</h2>
-        <ul class="roadmap">
-          <li>
-            Annotated cine loops with tappable hotspots for common artifacts.
-          </li>
-          <li>
-            Live dose tracking overlay, with reminders to nudge infusion up/down.
-          </li>
-          <li>
-            Peer-sourced troubleshooting cards you can swipe through mid-study.
-          </li>
-        </ul>
-      </section>
         </div>
       </div>
     </main>

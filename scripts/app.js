@@ -194,6 +194,21 @@ const protocols = [
         { label: "Full replenishment", value: "8–10 s", note: "After 1.0 MI flash." },
         { label: "Frame rate", value: "28–32 fps", note: "Sector ≤50°." },
       ],
+      acquisitionTargets: [
+        "Uniform cavity opacification without persistent swirling after steady state is reached.",
+        "Myocardial contrast visible in all interpretable segments before flash, without cavity blooming.",
+        "One clean flash-replenishment sequence with clear refill tracking over several beats.",
+      ],
+      document: [
+        "Record MI, infusion rate, and whether any flash sequence was used.",
+        "Note any gain, focus, or sector-width adjustment that materially changed image quality.",
+        "Save one representative cine before flash and one during replenishment.",
+      ],
+      acceptableStudy: [
+        "LV cavity fills quickly and remains stable during acquisition.",
+        "Resting wall motion and resting perfusion appearance are internally consistent.",
+        "Any suspected defect persists after artifact correction and reacquisition.",
+      ],
       pearls: [
         "Log SmartInfuse changes directly on the worksheet.",
         "Store one cine pre-flash and one post-flash for QA review.",
@@ -268,6 +283,21 @@ const protocols = [
         { label: "LV arrival", value: "5–7 s", note: "Expect softer slope vs Definity." },
         { label: "Full replenishment", value: "10–12 s", note: "Lumason recovers slower—plan ahead." },
         { label: "Frame rate", value: "26–30 fps", note: "Maintain >25 fps for strain overlays." },
+      ],
+      acquisitionTargets: [
+        "Stable LV cavity signal without patchy layering from settling or under-mixing.",
+        "Visible myocardial contrast at low MI before any flash maneuver.",
+        "Replenishment captured long enough to judge slower Lumason refill behavior.",
+      ],
+      document: [
+        "Document flush timing because it can visibly change cavity intensity.",
+        "Record syringe age and whether the mixture was re-agitated during the study.",
+        "Save a clip that shows both cavity fill and myocardial appearance in the same view.",
+      ],
+      acceptableStudy: [
+        "Signal remains interpretable after repeat agitation or flush if needed.",
+        "The apex is not undercalled because of near-field weakness alone.",
+        "A suspected defect is not just reduced bubble concentration from settling.",
       ],
       pearls: [
         "Document every flush to correlate with cine brightness jumps.",
@@ -344,6 +374,21 @@ const protocols = [
         { label: "Full replenishment", value: "7–9 s", note: "Monitor via quad view." },
         { label: "Frame rate", value: "25–30 fps", note: "Use adaptive PRF to stay fast." },
       ],
+      acquisitionTargets: [
+        "Adequate cavity fill while preserving border definition through the B-Flow mix.",
+        "Frame rate remains high enough to judge replenishment, not just border appearance.",
+        "At least one acquisition with overlay minimized or off for reference comparison.",
+      ],
+      document: [
+        "Capture the B-Flow mix percentage or overlay setting used for the stored cine.",
+        "Note when dual focus or overlay changes were needed to maintain quality.",
+        "Record whether flash was interpreted on overlay or contrast-only view.",
+      ],
+      acceptableStudy: [
+        "Overlay does not hide true myocardial signal.",
+        "Frame rate remains adequate after all display features are enabled.",
+        "Suspected perfusion defects remain visible when the overlay is simplified.",
+      ],
       pearls: [
         "Screenshot the B-Flow mix knob for QA records.",
         "Label loops 'B-Flow mix %' so physicians know overlay level.",
@@ -419,6 +464,21 @@ const protocols = [
         { label: "Full replenishment", value: "9–11 s", note: "Use short flash to confirm." },
         { label: "Frame rate", value: "24–28 fps", note: "Maintain >24 fps even with overlays." },
       ],
+      acquisitionTargets: [
+        "Soft but homogeneous cavity fill without overlay suppressing contrast signal.",
+        "Apex and basal segments both remain assessable at the selected frame rate.",
+        "Any overlay or smoothing feature stays subordinate to the contrast image.",
+      ],
+      document: [
+        "Log adaptive gain settings if they materially alter the view.",
+        "Record overlay percentage and any temporary switch back to reference imaging.",
+        "Store one clip that demonstrates the final optimized appearance used for interpretation.",
+      ],
+      acceptableStudy: [
+        "The image remains interpretable even after overlay settings are reduced.",
+        "Apparent abnormalities are not just sector-width or frame-rate artifacts.",
+        "There is enough stored cine to review both cavity quality and myocardial refill.",
+      ],
       pearls: [
         "Track adaptive gain settings per view for QA reproducibility.",
         "Tag loops with MI/infusion pairs so attending can correlate brightness.",
@@ -428,41 +488,66 @@ const protocols = [
   },
 ];
 
-const checklistItems = [
-  "Time-out: confirm agent, dose, IV patency, and absence of shunts.",
-  "20G or larger IV in the right antecubital with dedicated line—no shared drips.",
-  "Continuous infusion pump or syringe pump dedicated to the contrast line.",
-  "Microbore tubing plus a three-way stopcock to minimize dead space.",
-  "Agent-specific dilution prepared, labeled, and connected before imaging starts.",
-  "Normal saline flush syringes ready at the bedside.",
-  "Contrast worksheet or capture sheet for MI, infusion rate, and flash timing.",
-  "Label the infusion syringe/bag with agent, concentration, and start time.",
-  "Set a timer for bubble agitation (shake syringe every 3–4 minutes).",
-  "Capture a reference loop before infusion for baseline comparison.",
-  "Log MI, infusion rate, and any flash maneuvers directly on the worksheet.",
-  "Export one optimized clip per view plus a sweep showing replenishment.",
+const checklistSections = [
+  {
+    title: "Supplies",
+    items: [
+      "20G or larger IV in the right antecubital with a dedicated contrast line.",
+      "Continuous infusion pump or syringe pump reserved for the contrast study.",
+      "Microbore tubing and a three-way stopcock to reduce dead space.",
+      "Prepared ultrasound enhancing agent with the intended dilution ready to connect.",
+      "Normal saline flush syringes available at the bedside.",
+      "Clearly labeled infusion syringe or bag with agent name and concentration.",
+    ],
+  },
+  {
+    title: "Administrative",
+    items: [
+      "Product labeling available for the selected agent.",
+      "Institutional contrast documentation workflow or worksheet ready before the exam starts.",
+      "Order, indication, and contrast consent process completed per local policy.",
+      "Patient identifiers, IV site, and any relevant contraindication screening confirmed.",
+      "Study team aligned on whether the exam is resting perfusion, stress perfusion, or LV opacification only.",
+    ],
+  },
 ];
 
-const stressEchoItems = [
+const stressEchoOverview = {
+  title: "Why MCE is useful during stress",
+  description:
+    "Myocardial contrast is most helpful when stress shortens the available imaging window and endocardial definition becomes less reliable. Low-MI perfusion imaging can show delayed replenishment before obvious wall motion changes, while also preserving LV cavity definition in patients who become technically difficult at peak stress.",
+  bullets: [
+    "Perfusion can become abnormal before wall motion visibly changes.",
+    "Contrast helps maintain interpretable apical views as heart rate rises.",
+    "A steady infusion makes stress-stage comparison more reproducible than repeated boluses.",
+  ],
+};
+
+const stressEchoWorkflow = [
   {
-    title: "Why perfusion during stress",
-    description:
-      "Stress echo is where myocardial contrast earns its keep. Perfusion defects can appear before obvious wall motion changes, especially when tachycardia shortens your window and apical definition degrades.",
+    step: "1. Rest baseline",
+    detail:
+      "Acquire low-MI baseline loops first and confirm the infusion has reached a stable steady state before any flash sequence.",
   },
   {
-    title: "Acquisition principle",
-    description:
-      "Keep the infusion steady as workload rises, resist the urge to chase every brightness change, and preserve frame rate by narrowing the sector. The target is reproducible replenishment across stress stages rather than a single dramatic flash sequence.",
+    step: "2. Rest flash-replenishment",
+    detail:
+      "Capture a clean flash-replenishment sequence at rest so you know what normal refill looks like in that patient and that view.",
   },
   {
-    title: "What to document",
-    description:
-      "Record the stress stage, heart rate, MI, infusion rate, and whether a flash-replenishment sequence was used. A useful stress study is not just visually impressive; it is traceable enough that someone else can understand how the image was acquired.",
+    step: "3. Stress stage optimization",
+    detail:
+      "As heart rate rises, narrow the sector, protect frame rate, and avoid unnecessary gain or MI changes once the image is usable.",
   },
   {
-    title: "How this site should be used at stress",
-    description:
-      "Treat the machine and agent pathways above as your baseline acquisition protocol, then simplify aggressively as heart rate rises: narrower sector, minimal knob changes, and one reproducible flash-replenishment sequence per stage when clinically useful.",
+    step: "4. Peak or near-peak stress capture",
+    detail:
+      "Store the stress loop that best represents cavity definition and perfusion. If using flash, record enough post-flash beats to judge replenishment rather than just the flash itself.",
+  },
+  {
+    step: "5. Recovery if needed",
+    detail:
+      "If peak images are limited by motion or artifact, use early recovery to repeat the same view with the same setup while the physiologic information is still useful.",
   },
 ];
 
@@ -496,6 +581,15 @@ const referenceSections = [
         source: "ASE",
         note:
           "Stress-echo framework with specific mention of ultrasound enhancing agents and perfusion imaging.",
+      },
+      {
+        label:
+          "Guidelines for the Cardiac Sonographer in the Performance of Contrast Echocardiography: A Focused Update from the American Society of Echocardiography",
+        href:
+          "https://www.asecho.org/wp-content/uploads/2025/05/2014_Contrast-Sonography.pdf",
+        source: "ASE PDF",
+        note:
+          "Most useful artifact table for this site. Table 2 lays out common contrast problems and the sonographer correction method.",
       },
     ],
   },
@@ -578,25 +672,25 @@ const featuredExample = {
 const pitfallHotspots = [
   {
     id: "hotspot-1",
-    title: "Apical blooming / near-field destruction",
+    title: "Apex-endocardial border swirling",
     description:
-      "Literature on low-MI perfusion imaging repeatedly warns that the apex can look abnormal simply because near-field signal is too hot or bubbles are being destroyed too aggressively. Reduce gain or infusion before calling this a defect.",
+      "The ASE sonographer update identifies apical swirling as a classic apex-endocardial artifact. The correction is to use real-time very low MI imaging and increase infusion rate if the cavity is not reaching a stable steady state.",
     left: "31%",
     top: "24%",
   },
   {
     id: "hotspot-2",
-    title: "Lateral wall dropout / attenuation",
+    title: "Apex-myocardium reduced contrast",
     description:
-      "Apparent lateral wall hypoenhancement may reflect attenuation rather than true hypoperfusion. Reposition the window, narrow the sector, and reassess cavity brightness before interpreting the segment.",
+      "Reduced apical myocardial contrast can be artifactual. Table 2 recommends increasing near-field TGC under resting conditions and temporarily moving focus into the near field.",
     left: "66%",
     top: "44%",
   },
   {
     id: "hotspot-3",
-    title: "Basal shadowing",
+    title: "Basal shadowing / attenuation",
     description:
-      "Basal dropout is commonly caused by rib or lung interference in practical MCE acquisition. Heel-toe the probe and trim basal TGC instead of chasing MI or overcalling a fixed perfusion defect.",
+      "Basal or mid-wall dropout is commonly attenuation. The practical correction is to slow the infusion or reduce bolus and flush intensity, then reacquire once the shadowing resolves.",
     left: "56%",
     top: "74%",
   },
@@ -607,41 +701,79 @@ const pitfallReferenceImage = {
   alt: "Perfusion still frame with three interactive pitfall markers.",
 };
 
+const qualityGuardrails = [
+  {
+    title: "Flash-replenishment timing",
+    detail:
+      "Assess perfusion at end-systole and time the flash so the low-MI end-systolic frames are interpretable immediately afterward.",
+  },
+  {
+    title: "Post-flash capture length",
+    detail:
+      "Record at least 5 post-flash beats and ideally 10-15 cycles so replenishment can actually be judged.",
+  },
+  {
+    title: "What a good flash looks like",
+    detail:
+      "The flash should clear myocardium while preserving a visible LV cavity. If myocardium is not cleared, add flash frames before increasing MI.",
+  },
+  {
+    title: "Immediate post-flash appearance",
+    detail:
+      "Aim for dark myocardium and a light but still visible LV cavity. If both are wiped out, it is too destructive; if myocardium stays bright, the flash was inadequate.",
+  },
+  {
+    title: "Keep settings stable once optimized",
+    detail:
+      "Once infusion rate, gain, MI, and focus are optimized, keep them constant through the sequence.",
+  },
+  {
+    title: "Replenishment benchmarks",
+    detail:
+      "Normal resting replenishment is about 4-5 seconds after flash; during hyperemic stress it should be about 2 seconds.",
+  },
+  {
+    title: "Rule out attenuation before calling a defect",
+    detail:
+      "If delay is limited to basal segments in apical windows, suspect attenuation first. Reacquire before calling it abnormal.",
+  },
+];
+
 const artifactTeachingCards = [
   {
-    title: "Attenuation and shadowing",
+    title: "Swirling at the apex-endocardial border",
     signal:
-      "A myocardial segment looks dark because the cavity or adjacent tissue is over-attenuating the beam, often in basal or lateral walls.",
+      "The LV apex never becomes uniformly opacified and instead shows a smoke-like pattern rather than a clean cavity border.",
     fix:
-      "The MCE reviews and guideline documents recommend changing the window first, then reducing overall contrast intensity or gain. A dark segment that improves with repositioning is an artifact until proven otherwise.",
+      "Per the ASE sonographer guideline, move to real-time very low MI imaging and increase infusion rate. Lower frame rate and temporary near-field focus can also help prevent apical destruction.",
   },
   {
-    title: "Blooming and cavity overgain",
+    title: "Reduced contrast in the apex-myocardium interface",
     signal:
-      "The LV cavity is so bright that endocardial borders blur and myocardium is partly obscured, especially near the apex or in the near field.",
+      "Apical myocardium looks under-opacified even though the cavity is present, creating a false suggestion of reduced resting perfusion.",
     fix:
-      "Back down gain or infusion and keep MI low. The literature is clear that myocardial perfusion cannot be judged reliably when cavity signal overwhelms the myocardium.",
+      "Increase near-field TGC and temporarily move focus to the near field. The ASE document also recommends foreshortened apical windows to bring basal segments closer to the transducer when needed.",
   },
   {
-    title: "Swirling from incomplete steady state",
+    title: "Reduced myocardial contrast in basal segments",
     signal:
-      "Contrast density changes beat to beat, with patchy cavity fill and inconsistent myocardial signal.",
+      "Basal myocardium looks darker than expected even though resting wall motion is otherwise normal.",
     fix:
-      "Re-establish a steady infusion before interpreting replenishment. Real-time MCE papers emphasize that destruction-replenishment logic only works when microbubble concentration is stable.",
+      "Treat this as artifact first. The ASE table emphasizes that if resting wall motion is normal, a resting contrast defect is artifactual; use that principle when setting receiver gain.",
   },
   {
-    title: "False apical defect",
+    title: "Inadequate LV cavity contrast during continuous infusion",
     signal:
-      "The apex looks under-opacified even though the rest of the ventricle fills well and there is no coherent territorial pattern.",
+      "The cavity never develops reliable opacification despite an infusion-based protocol.",
     fix:
-      "Think near-field destruction, gain, or focal geometry before ischemia. Lower power, rebalance gain, and reacquire the view.",
+      "Check the IV site, increase the infusion rate, make sure the agent is not too dilute, and confirm that it is still adequately mixed. A small bolus can be a fallback.",
   },
   {
-    title: "Rib or lung artifact",
+    title: "Shadowing of basal or mid segments",
     signal:
-      "Basal or lateral dropout changes with breathing or probe angle and does not behave like a physiologic replenishment abnormality.",
+      "Basal or mid segments disappear because cavity contrast is too dense and begins to attenuate the beam.",
     fix:
-      "Move the transducer, heel-toe, or reacquire in a different interspace. The practical guidance literature consistently treats moving shadow as artifact, not perfusion loss.",
+      "Slow the infusion or reduce bolus size and flush rate. The ASE guidance specifically notes that infusion reduces shadowing problems and is easier to correct than bolus-based attenuation.",
     },
 ];
 
@@ -667,6 +799,7 @@ const els = {
 };
 
 function init() {
+  document.body.classList.add("js-ready");
   renderBackground();
   renderMachineOptions();
   renderBubbleOptions();
@@ -805,22 +938,27 @@ function renderPitfalls() {
   const protocol = getActiveProtocol();
   const cards = (protocol?.pitfalls ?? artifactTeachingCards)
     .map(
-      (pitfall) => `
-      <article class="pitfall-card">
-        <h3>${pitfall.title}</h3>
-        <p><strong>Signal:</strong> ${pitfall.signal}</p>
-        <p><strong>Fix:</strong> ${pitfall.fix}</p>
+      (pitfall, index) => `
+      <article class="pitfall-teaching-card">
+        <div class="pitfall-teaching-card__content">
+          <div class="badge">Artifact ${index + 1}</div>
+          <h3>${pitfall.title}</h3>
+          <p><strong>Signal:</strong> ${pitfall.signal}</p>
+          <p><strong>Fix:</strong> ${pitfall.fix}</p>
+        </div>
+        <div class="pitfall-teaching-card__media">
+          ${renderPitfallFigure(index)}
+        </div>
       </article>
     `,
     )
     .join("");
   els.pitfallsGrid.innerHTML = `
-    ${renderPitfallFigure()}
     ${cards}
   `;
 }
 
-function renderPitfallFigure() {
+function renderPitfallFigure(index) {
   const hotspots = pitfallHotspots
     .map(
       (hotspot, index) => `
@@ -846,24 +984,20 @@ function renderPitfallFigure() {
     .join("");
 
   return `
-    <article class="pitfall-figure">
-      <div class="pitfall-figure__copy">
-        <div class="badge">Hover the circles</div>
-        <h3>Annotated pitfalls reference frame</h3>
-        <p>
-          This demo overlay shows how still images can become teaching surfaces.
-          Hover or focus any circle to reveal the pitfall explainer.
-        </p>
-      </div>
+    <div class="pitfall-figure" aria-label="Annotated pitfalls reference frame ${index + 1}">
       <div class="pitfall-annotator">
-        <img
-          class="pitfall-annotator__image"
-          src="${pitfallReferenceImage.src}"
-          alt="${pitfallReferenceImage.alt}"
-        />
-        ${hotspots}
+        <div class="pitfall-annotator__viewport">
+          <img
+            class="pitfall-annotator__image"
+            src="${pitfallReferenceImage.src}"
+            alt="${pitfallReferenceImage.alt}"
+          />
+        </div>
+        <div class="pitfall-annotator__overlay">
+          ${hotspots}
+        </div>
       </div>
-    </article>
+    </div>
   `;
 }
 
@@ -871,10 +1005,28 @@ function renderQuality() {
   if (!els.qualityData) return;
   const protocol = getActiveProtocol();
   const example = renderFeaturedExample();
+  const guardrails = `
+    <details class="disclosure quality-disclosure">
+      <summary>Core data quality recommendations</summary>
+      <div class="quality-card quality-card--guardrails">
+        <ul>
+          ${qualityGuardrails
+            .map(
+              (item) => `
+                <li>
+                  <strong>${item.title}:</strong> ${item.detail}
+                </li>
+              `,
+            )
+            .join("")}
+        </ul>
+      </div>
+    </details>
+  `;
   if (!protocol) {
     els.qualityData.innerHTML = `
       ${example}
-      <p class="placeholder">Select a machine-agent pairing to load data.</p>
+      ${guardrails}
     `;
     return;
   }
@@ -888,6 +1040,30 @@ function renderQuality() {
       `,
     )
     .join("");
+  const targets = `
+    <div class="quality-card">
+      <h3>Acquisition targets</h3>
+      <ul>
+        ${protocol.quality.acquisitionTargets.map((item) => `<li>${item}</li>`).join("")}
+      </ul>
+    </div>
+  `;
+  const documentation = `
+    <div class="quality-card">
+      <h3>What to document</h3>
+      <ul>
+        ${protocol.quality.document.map((item) => `<li>${item}</li>`).join("")}
+      </ul>
+    </div>
+  `;
+  const usableStudy = `
+    <div class="quality-card">
+      <h3>When the study is usable</h3>
+      <ul>
+        ${protocol.quality.acceptableStudy.map((item) => `<li>${item}</li>`).join("")}
+      </ul>
+    </div>
+  `;
   const pearls = `
     <div class="quality-card">
       <h3>QA pearls</h3>
@@ -898,7 +1074,11 @@ function renderQuality() {
   `;
   els.qualityData.innerHTML = `
     ${example}
+    ${guardrails}
     ${metrics}
+    ${targets}
+    ${documentation}
+    ${usableStudy}
     ${pearls}
   `;
 }
@@ -930,22 +1110,37 @@ function renderFeaturedExample() {
 function renderChecklist() {
   if (!els.checklist) return;
   const savedState = loadChecklistState();
-  els.checklist.innerHTML = checklistItems
-    .map(
-      (item, index) => `
-        <li>
-          <label class="checklist-item">
-            <input
-              class="checklist-item__checkbox"
-              type="checkbox"
-              data-checklist-index="${index}"
-              ${savedState[index] ? "checked" : ""}
-            />
-            <span>${item}</span>
-          </label>
+  let runningIndex = 0;
+  els.checklist.innerHTML = checklistSections
+    .map((section) => {
+      const items = section.items
+        .map((item) => {
+          const index = runningIndex;
+          runningIndex += 1;
+          return `
+            <li>
+              <label class="checklist-item">
+                <input
+                  class="checklist-item__checkbox"
+                  type="checkbox"
+                  data-checklist-index="${index}"
+                  ${savedState[index] ? "checked" : ""}
+                />
+                <span>${item}</span>
+              </label>
+            </li>
+          `;
+        })
+        .join("");
+      return `
+        <li class="checklist-group">
+          <h3>${section.title}</h3>
+          <ul class="checklist checklist--nested">
+            ${items}
+          </ul>
         </li>
-      `,
-    )
+      `;
+    })
     .join("");
   const checkboxes = els.checklist.querySelectorAll("[data-checklist-index]");
   checkboxes.forEach((checkbox) => {
@@ -955,16 +1150,33 @@ function renderChecklist() {
 
 function renderStressEcho() {
   if (!els.stressEcho) return;
-  els.stressEcho.innerHTML = stressEchoItems
-    .map(
-      (item) => `
-        <article class="resource-card">
-          <h3>${item.title}</h3>
-          <p>${item.description}</p>
-        </article>
-      `,
-    )
-    .join("");
+  els.stressEcho.innerHTML = `
+    <article class="resource-card resource-card--wide">
+      <h3>${stressEchoOverview.title}</h3>
+      <p>${stressEchoOverview.description}</p>
+      <ul>
+        ${stressEchoOverview.bullets.map((item) => `<li>${item}</li>`).join("")}
+      </ul>
+    </article>
+    <article class="resource-card resource-card--wide">
+      <h3>Stress workflow schematic</h3>
+      <div class="workflow">
+        ${stressEchoWorkflow
+          .map(
+            (item) => `
+              <div class="workflow-step">
+                <div class="workflow-step__marker"></div>
+                <div class="workflow-step__content">
+                  <h4>${item.step}</h4>
+                  <p>${item.detail}</p>
+                </div>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    </article>
+  `;
 }
 
 function renderReferences() {
@@ -972,29 +1184,23 @@ function renderReferences() {
   els.references.innerHTML = referenceSections
     .map(
       (section) => `
-        <article class="resource-card">
-          <h3>${section.title}</h3>
-          <ul>
-            ${section.items
-              .map(
-                (item) => `
-                  <li>
-                    <a href="${item.href}" target="_blank" rel="noreferrer">${item.label}</a>
-                    <a
-                      class="resource-link"
-                      href="${item.href}"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Original source (${item.source})
-                    </a>
-                    <span class="resource-note">${item.note}</span>
-                  </li>
-                `,
-              )
-              .join("")}
-          </ul>
-        </article>
+        <details class="disclosure resource-disclosure">
+          <summary>${section.title}</summary>
+          <div class="resource-card">
+            <ul>
+              ${section.items
+                .map(
+                  (item) => `
+                    <li>
+                      <a href="${item.href}" target="_blank" rel="noreferrer">${item.label}</a>
+                      <span class="resource-note">${item.note}</span>
+                    </li>
+                  `,
+                )
+                .join("")}
+            </ul>
+          </div>
+        </details>
       `,
     )
     .join("");
@@ -1152,7 +1358,14 @@ function wireButtons() {
 
   checklistBtn?.addEventListener("click", async () => {
     try {
-      await navigator.clipboard.writeText(checklistItems.join("\n"));
+      await navigator.clipboard.writeText(
+        checklistSections
+          .map(
+            (section) =>
+              `${section.title}\n${section.items.map((item) => `- ${item}`).join("\n")}`,
+          )
+          .join("\n\n"),
+      );
       checklistBtn.textContent = "Copied!";
       setTimeout(() => (checklistBtn.textContent = "Copy universal checklist"), 2000);
     } catch (error) {
@@ -1164,8 +1377,8 @@ function wireButtons() {
 
 function initStoryNav() {
   const nav = document.getElementById("story-nav-list");
-  const progress = document.querySelector(".progress__bar");
-  if (!nav || !progress) return;
+  const flowMask = document.querySelector(".flow-progress__mask");
+  if (!nav) return;
   const links = Array.from(nav.querySelectorAll(".story-link"));
   const sections = links
     .map((link) => document.getElementById(link.dataset.target ?? ""))
@@ -1200,8 +1413,14 @@ function initStoryNav() {
     const scrollable =
       document.documentElement.scrollHeight -
       document.documentElement.clientHeight;
-    const scrolled = window.scrollY / scrollable;
-    progress.style.transform = `scaleX(${Math.min(Math.max(scrolled, 0), 1)})`;
+    const scrolled = scrollable > 0 ? window.scrollY / scrollable : 0;
+    const clampedScrolled = Math.min(Math.max(scrolled, 0), 1);
+
+    if (flowMask) {
+      const totalWidth = 220;
+      const fillWidth = totalWidth * clampedScrolled;
+      flowMask.setAttribute("width", String(fillWidth));
+    }
   };
 
   window.addEventListener("scroll", updateProgress, { passive: true });
