@@ -13,6 +13,31 @@
     <link rel="stylesheet" href="styles/main.css" />
   </head>
   <body>
+    <div class="role-toggle" aria-label="Audience selector">
+      <div class="role-toggle__inner">
+        <span class="role-toggle__label">I am a...</span>
+        <div class="role-toggle__controls" role="tablist" aria-label="Audience">
+          <button
+            id="role-sonographer"
+            class="role-toggle__button is-active"
+            type="button"
+            data-role="sonographer"
+            aria-pressed="true"
+          >
+            Sonographer
+          </button>
+          <button
+            id="role-cardiologist"
+            class="role-toggle__button"
+            type="button"
+            data-role="cardiologist"
+            aria-pressed="false"
+          >
+            Cardiologist
+          </button>
+        </div>
+      </div>
+    </div>
     <div class="gate" id="access-gate" aria-modal="true" role="dialog">
       <form class="gate__panel" id="access-form">
         <p class="eyebrow">Preview mode</p>
@@ -66,6 +91,7 @@
             <li><button data-target="pitfalls-heading" class="story-link" type="button">Common pitfalls</button></li>
             <li><button data-target="quality-heading" class="story-link" type="button">Quality Data Examples</button></li>
             <li><button data-target="stress-heading" class="story-link" type="button">Stress echo</button></li>
+            <li class="role-only role-only--cardiologist"><button data-target="interpretation-heading" class="story-link" type="button">Interpretation</button></li>
             <li><button data-target="references-heading" class="story-link" type="button">References</button></li>
           </ol>
           <div class="flow-progress" aria-hidden="true">
@@ -76,11 +102,6 @@
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <defs>
-                <mask id="flow-progress-mask">
-                  <rect class="flow-progress__mask" x="0" y="0" width="0" height="140" fill="white" />
-                </mask>
-              </defs>
               <g class="flow-progress__base">
                 <path d="M10 70 C42 70 70 70 94 70" />
                 <path d="M94 70 C108 70 118 58 130 44" />
@@ -101,7 +122,7 @@
                 <path d="M192 68 C200 64 208 60 216 58" />
                 <path d="M192 90 C200 96 208 102 216 108" />
               </g>
-              <g class="flow-progress__fill" mask="url(#flow-progress-mask)">
+              <g class="flow-progress__fill">
                 <path d="M10 70 C42 70 70 70 94 70" />
                 <path d="M94 70 C108 70 118 58 130 44" />
                 <path d="M94 70 C108 70 118 82 130 96" />
@@ -265,6 +286,15 @@
         <p class="eyebrow">Section 6</p>
         <h2 id="stress-heading">Stress echo</h2>
         <div id="stress-echo" class="resource-grid"></div>
+      </section>
+
+      <section
+        class="panel flow animate role-only role-only--cardiologist"
+        aria-labelledby="interpretation-heading"
+      >
+        <p class="eyebrow">Cardiologist add-on</p>
+        <h2 id="interpretation-heading">Interpretation</h2>
+        <div id="interpretation" class="resource-grid"></div>
       </section>
 
       <section class="panel flow animate" aria-labelledby="references-heading">

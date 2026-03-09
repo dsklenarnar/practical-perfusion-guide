@@ -1,6 +1,7 @@
 const ACCESS_CODE = "perfusion-preview";
 const ACCESS_STORAGE_KEY = "practical-perfusion-access";
 const CHECKLIST_STORAGE_KEY = "practical-perfusion-checklist";
+const ROLE_STORAGE_KEY = "practical-perfusion-role";
 
 const backgroundTopics = [
   {
@@ -551,6 +552,17 @@ const stressEchoWorkflow = [
   },
 ];
 
+const interpretationOverview = {
+  title: "Basic interpretation checkpoints",
+  bullets: [
+    "Interpret perfusion in end-systolic frames and compare rest with stress using the same acquisition settings whenever possible.",
+    "A true stress defect should persist after artifact correction and should not be explained by attenuation, apical destruction, or unstable cavity opacification.",
+    "Normal hyperemic myocardium should replenish faster than at rest; delayed or incomplete refill at stress is more concerning than mild resting heterogeneity.",
+    "Wall motion and perfusion should be read together. A fixed resting contrast defect with normal resting wall motion is usually artifact.",
+    "If cavity signal is lost after flash or the sequence captures too few post-flash beats, treat the loop as nondiagnostic rather than overcalling ischemia.",
+  ],
+};
+
 const referenceSections = [
   {
     title: "Guidelines",
@@ -670,30 +682,96 @@ const featuredExample = {
 };
 
 const pitfallHotspots = [
-  {
-    id: "hotspot-1",
-    title: "Apex-endocardial border swirling",
-    description:
-      "The ASE sonographer update identifies apical swirling as a classic apex-endocardial artifact. The correction is to use real-time very low MI imaging and increase infusion rate if the cavity is not reaching a stable steady state.",
-    left: "31%",
-    top: "24%",
-  },
-  {
-    id: "hotspot-2",
-    title: "Apex-myocardium reduced contrast",
-    description:
-      "Reduced apical myocardial contrast can be artifactual. Table 2 recommends increasing near-field TGC under resting conditions and temporarily moving focus into the near field.",
-    left: "66%",
-    top: "44%",
-  },
-  {
-    id: "hotspot-3",
-    title: "Basal shadowing / attenuation",
-    description:
-      "Basal or mid-wall dropout is commonly attenuation. The practical correction is to slow the infusion or reduce bolus and flush intensity, then reacquire once the shadowing resolves.",
-    left: "56%",
-    top: "74%",
-  },
+  [
+    {
+      id: "hotspot-1a",
+      title: "Apex-endocardial border swirling",
+      description:
+        "The ASE sonographer update identifies apical swirling as a classic apex-endocardial artifact. The correction is to use real-time very low MI imaging and increase infusion rate if the cavity is not reaching a stable steady state.",
+      left: "28%",
+      top: "34%",
+    },
+    {
+      id: "hotspot-1b",
+      title: "Apex-myocardium reduced contrast",
+      description:
+        "Reduced apical myocardial contrast can be artifactual. Table 2 recommends increasing near-field TGC under resting conditions and temporarily moving focus into the near field.",
+      left: "63%",
+      top: "58%",
+    },
+  ],
+  [
+    {
+      id: "hotspot-2a",
+      title: "Apex-endocardial border swirling",
+      description:
+        "The ASE sonographer update identifies apical swirling as a classic apex-endocardial artifact. The correction is to use real-time very low MI imaging and increase infusion rate if the cavity is not reaching a stable steady state.",
+      left: "42%",
+      top: "26%",
+    },
+    {
+      id: "hotspot-2b",
+      title: "Apex-myocardium reduced contrast",
+      description:
+        "Reduced apical myocardial contrast can be artifactual. Table 2 recommends increasing near-field TGC under resting conditions and temporarily moving focus into the near field.",
+      left: "70%",
+      top: "66%",
+    },
+  ],
+  [
+    {
+      id: "hotspot-3a",
+      title: "Apex-endocardial border swirling",
+      description:
+        "The ASE sonographer update identifies apical swirling as a classic apex-endocardial artifact. The correction is to use real-time very low MI imaging and increase infusion rate if the cavity is not reaching a stable steady state.",
+      left: "22%",
+      top: "48%",
+    },
+    {
+      id: "hotspot-3b",
+      title: "Apex-myocardium reduced contrast",
+      description:
+        "Reduced apical myocardial contrast can be artifactual. Table 2 recommends increasing near-field TGC under resting conditions and temporarily moving focus into the near field.",
+      left: "58%",
+      top: "30%",
+    },
+  ],
+  [
+    {
+      id: "hotspot-4a",
+      title: "Apex-endocardial border swirling",
+      description:
+        "The ASE sonographer update identifies apical swirling as a classic apex-endocardial artifact. The correction is to use real-time very low MI imaging and increase infusion rate if the cavity is not reaching a stable steady state.",
+      left: "36%",
+      top: "62%",
+    },
+    {
+      id: "hotspot-4b",
+      title: "Apex-myocardium reduced contrast",
+      description:
+        "Reduced apical myocardial contrast can be artifactual. Table 2 recommends increasing near-field TGC under resting conditions and temporarily moving focus into the near field.",
+      left: "74%",
+      top: "40%",
+    },
+  ],
+  [
+    {
+      id: "hotspot-5a",
+      title: "Apex-endocardial border swirling",
+      description:
+        "The ASE sonographer update identifies apical swirling as a classic apex-endocardial artifact. The correction is to use real-time very low MI imaging and increase infusion rate if the cavity is not reaching a stable steady state.",
+      left: "30%",
+      top: "22%",
+    },
+    {
+      id: "hotspot-5b",
+      title: "Apex-myocardium reduced contrast",
+      description:
+        "Reduced apical myocardial contrast can be artifactual. Table 2 recommends increasing near-field TGC under resting conditions and temporarily moving focus into the near field.",
+      left: "67%",
+      top: "72%",
+    },
+  ],
 ];
 
 const pitfallReferenceImage = {
@@ -782,6 +860,15 @@ const selection = {
   bubbleId: null,
 };
 
+const audience = {
+  role: "sonographer",
+};
+
+const storyNavState = {
+  observer: null,
+  refresh: null,
+};
+
 let activeProtocolId = null;
 
 const els = {
@@ -795,11 +882,13 @@ const els = {
   qualityData: document.getElementById("quality-data"),
   checklist: document.getElementById("checklist"),
   stressEcho: document.getElementById("stress-echo"),
+  interpretation: document.getElementById("interpretation"),
   references: document.getElementById("references"),
 };
 
 function init() {
   document.body.classList.add("js-ready");
+  initializeRole();
   renderBackground();
   renderMachineOptions();
   renderBubbleOptions();
@@ -809,11 +898,43 @@ function init() {
   renderQuality();
   renderChecklist();
   renderStressEcho();
+  renderInterpretation();
   renderReferences();
   setupGate();
   wireButtons();
   initStoryNav();
   initAnimations();
+}
+
+function initializeRole() {
+  const savedRole =
+    typeof window !== "undefined"
+      ? window.localStorage.getItem(ROLE_STORAGE_KEY)
+      : null;
+  audience.role = savedRole === "cardiologist" ? "cardiologist" : "sonographer";
+  applyRole();
+}
+
+function applyRole() {
+  document.body.dataset.role = audience.role;
+  const roleButtons = Array.from(
+    document.querySelectorAll(".role-toggle__button"),
+  );
+  roleButtons.forEach((button) => {
+    const isActive = button.dataset.role === audience.role;
+    button.classList.toggle("is-active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
+  });
+  const cardiologistOnlyEls = Array.from(
+    document.querySelectorAll(".role-only--cardiologist"),
+  );
+  const isCardiologist = audience.role === "cardiologist";
+  cardiologistOnlyEls.forEach((element) => {
+    element.hidden = !isCardiologist;
+  });
+  window.requestAnimationFrame(() => {
+    storyNavState.refresh?.();
+  });
 }
 
 function renderBackground() {
@@ -959,7 +1080,8 @@ function renderPitfalls() {
 }
 
 function renderPitfallFigure(index) {
-  const hotspots = pitfallHotspots
+  const hotspotSet = pitfallHotspots[index % pitfallHotspots.length];
+  const hotspots = hotspotSet
     .map(
       (hotspot, index) => `
         <div
@@ -1179,6 +1301,18 @@ function renderStressEcho() {
   `;
 }
 
+function renderInterpretation() {
+  if (!els.interpretation) return;
+  els.interpretation.innerHTML = `
+    <article class="resource-card resource-card--wide">
+      <h3>${interpretationOverview.title}</h3>
+      <ul>
+        ${interpretationOverview.bullets.map((item) => `<li>${item}</li>`).join("")}
+      </ul>
+    </article>
+  `;
+}
+
 function renderReferences() {
   if (!els.references) return;
   els.references.innerHTML = referenceSections
@@ -1333,6 +1467,9 @@ function wireButtons() {
     "toggle-machine-compare",
   );
   const checklistBtn = document.getElementById("download-checklist");
+  const roleButtons = Array.from(
+    document.querySelectorAll(".role-toggle__button"),
+  );
 
   startFlow?.addEventListener("click", () => {
     document
@@ -1373,41 +1510,77 @@ function wireButtons() {
       setTimeout(() => (checklistBtn.textContent = "Copy universal checklist"), 2000);
     }
   });
+
+  roleButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const nextRole =
+        button.dataset.role === "cardiologist" ? "cardiologist" : "sonographer";
+      audience.role = nextRole;
+      applyRole();
+      try {
+        window.localStorage.setItem(ROLE_STORAGE_KEY, audience.role);
+      } catch (error) {
+        return;
+      }
+    });
+  });
 }
 
 function initStoryNav() {
   const nav = document.getElementById("story-nav-list");
-  const flowMask = document.querySelector(".flow-progress__mask");
+  const flowPaths = Array.from(
+    document.querySelectorAll(".flow-progress__fill path"),
+  );
   if (!nav) return;
-  const links = Array.from(nav.querySelectorAll(".story-link"));
-  const sections = links
-    .map((link) => document.getElementById(link.dataset.target ?? ""))
-    .filter(Boolean);
+  const allLinks = Array.from(nav.querySelectorAll(".story-link"));
 
-  links.forEach((link) => {
-    link.addEventListener("click", () => {
-      const targetId = link.dataset.target;
-      const target = document.getElementById(targetId ?? "");
-      target?.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
+  nav.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+    const link = target.closest(".story-link");
+    if (!(link instanceof HTMLButtonElement)) return;
+    const targetId = link.dataset.target;
+    const section = document.getElementById(targetId ?? "");
+    section?.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        const activeLink = links.find(
-          (link) => link.dataset.target === entry.target.id,
-        );
-        if (!activeLink) return;
-        links.forEach((l) => l.classList.remove("is-active"));
-        activeLink.classList.add("is-active");
-      });
-    },
-    { threshold: 0.4 },
-  );
+  const refreshObservedSections = () => {
+    storyNavState.observer?.disconnect();
+    const visibleLinks = allLinks.filter((link) => link.offsetParent !== null);
+    const sections = visibleLinks
+      .map((link) => document.getElementById(link.dataset.target ?? ""))
+      .filter((section) => section && section.offsetParent !== null);
 
-  sections.forEach((section) => observer.observe(section));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const activeLink = visibleLinks.find(
+            (link) => link.dataset.target === entry.target.id,
+          );
+          if (!activeLink) return;
+          allLinks.forEach((link) => link.classList.remove("is-active"));
+          activeLink.classList.add("is-active");
+        });
+      },
+      { threshold: 0.4 },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    storyNavState.observer = observer;
+  };
+
+  storyNavState.refresh = refreshObservedSections;
+  refreshObservedSections();
+
+  if (flowPaths.length) {
+    flowPaths.forEach((path) => {
+      const length = path.getTotalLength();
+      path.style.setProperty("--flow-length", String(length));
+      path.style.strokeDasharray = String(length);
+      path.style.strokeDashoffset = String(length);
+    });
+  }
 
   const updateProgress = () => {
     const scrollable =
@@ -1416,10 +1589,16 @@ function initStoryNav() {
     const scrolled = scrollable > 0 ? window.scrollY / scrollable : 0;
     const clampedScrolled = Math.min(Math.max(scrolled, 0), 1);
 
-    if (flowMask) {
-      const totalWidth = 220;
-      const fillWidth = totalWidth * clampedScrolled;
-      flowMask.setAttribute("width", String(fillWidth));
+    if (flowPaths.length) {
+      const totalPaths = flowPaths.length;
+      const scaledProgress = clampedScrolled * totalPaths;
+      flowPaths.forEach((path, index) => {
+        const length = Number.parseFloat(
+          path.style.getPropertyValue("--flow-length") || "0",
+        );
+        const branchProgress = Math.min(Math.max(scaledProgress - index, 0), 1);
+        path.style.strokeDashoffset = String(length * (1 - branchProgress));
+      });
     }
   };
 
