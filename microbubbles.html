@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Microbubbles | Practical Perfusion Playbook</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles/main.css" />
+  </head>
+  <body class="microbubble-page">
+    <div class="microbubble-scene" aria-hidden="true">
+      <span class="microbubble microbubble--one"></span>
+      <span class="microbubble microbubble--two"></span>
+      <span class="microbubble microbubble--three"></span>
+      <span class="microbubble microbubble--four"></span>
+      <span class="microbubble microbubble--five"></span>
+      <span class="microbubble microbubble--six"></span>
+      <span class="microbubble microbubble--seven"></span>
+      <span class="microbubble microbubble--eight"></span>
+      <span class="microbubble microbubble--nine"></span>
+      <span class="microbubble microbubble--ten"></span>
+      <span class="microbubble microbubble--eleven"></span>
+      <span class="microbubble microbubble--twelve"></span>
+      <span class="microbubble microbubble--thirteen"></span>
+      <span class="microbubble microbubble--fourteen"></span>
+      <span class="microbubble microbubble--fifteen"></span>
+      <span class="microbubble microbubble--sixteen"></span>
+      <span class="microbubble microbubble--seventeen"></span>
+      <span class="microbubble microbubble--eighteen"></span>
+      <span class="microbubble microbubble--nineteen"></span>
+      <span class="microbubble microbubble--twenty"></span>
+      <span class="microbubble microbubble--twentyone"></span>
+    </div>
+    <main class="subpage">
+      <a class="subpage__back" href="index.html">← Back to the playbook</a>
+
+      <header class="subpage__hero">
+        <p class="eyebrow">Background extension</p>
+        <h1>Microbubbles</h1>
+        <p class="lede">
+          A short orientation to what microbubbles are.
+        </p>
+      </header>
+
+      <section class="subpage__grid">
+        <article class="subpage__card">
+          <h2>What they are</h2>
+          <p>
+            Ultrasound enhancing agents are gas-filled microbubbles with a stabilizing shell. They remain within
+            the intravascular space, which is why they improve LV cavity opacification and can be used for
+            perfusion imaging.
+          </p>
+        </article>
+      </section>
+    </main>
+    <script>
+      (() => {
+        const scene = document.querySelector(".microbubble-scene");
+        const bubbles = Array.from(document.querySelectorAll(".microbubble"));
+        const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+        if (!scene || !bubbles.length || motionQuery.matches) return;
+        const pointer = {
+          x: window.innerWidth / 2,
+          y: window.innerHeight / 2,
+          active: false,
+        };
+
+        const updateBubbles = (x, y) => {
+          bubbles.forEach((bubble, index) => {
+            const depth = 0.12 + (index % 5) * 0.07;
+            const moveX = (x - 0.5) * 28 * depth;
+            const moveY = (y - 0.5) * 22 * depth;
+            const rotate = (x - 0.5) * 10 * depth;
+            bubble.style.setProperty("--bubble-x", `${moveX.toFixed(2)}px`);
+            bubble.style.setProperty("--bubble-y", `${moveY.toFixed(2)}px`);
+            bubble.style.setProperty("--bubble-r", `${rotate.toFixed(2)}deg`);
+          });
+        };
+
+        const animateScale = (time) => {
+          bubbles.forEach((bubble, index) => {
+            if (!pointer.active) {
+              bubble.style.setProperty("--bubble-scale", "1");
+              return;
+            }
+            const rect = bubble.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            const distance = Math.hypot(pointer.x - centerX, pointer.y - centerY);
+            const influence = Math.max(0, 1 - distance / 180);
+            const speed = 0.01 + (index % 4) * 0.0022;
+            const phase = index * 0.8;
+            const pulse = ((Math.sin(time * speed + phase) + 1) / 2) * 0.98;
+            const scale = 1 - influence * 0.72 + pulse * influence;
+            bubble.style.setProperty("--bubble-scale", scale.toFixed(3));
+          });
+          window.requestAnimationFrame(animateScale);
+        };
+
+        window.addEventListener("mousemove", (event) => {
+          pointer.active = true;
+          pointer.x = event.clientX;
+          pointer.y = event.clientY;
+          const x = event.clientX / window.innerWidth;
+          const y = event.clientY / window.innerHeight;
+          updateBubbles(x, y);
+        }, { passive: true });
+
+        window.addEventListener("mouseleave", () => {
+          pointer.active = false;
+        });
+
+        updateBubbles(0.5, 0.5);
+        window.requestAnimationFrame(animateScale);
+      })();
+    </script>
+  </body>
+</html>

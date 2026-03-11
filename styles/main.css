@@ -176,6 +176,19 @@ body[data-role="cardiologist"] .role-only--cardiologist {
   color: var(--muted);
 }
 
+.section-linkout {
+  margin: 14px 0 0;
+  font-weight: 600;
+}
+
+.section-linkout a {
+  text-decoration: none;
+}
+
+.section-linkout a:hover {
+  text-decoration: underline;
+}
+
 .hero__cta {
   display: flex;
   flex-wrap: wrap;
@@ -929,6 +942,121 @@ body[data-role="cardiologist"] .flow-progress__fill path {
   margin: 12px auto 0;
   font-size: 0.92rem;
 }
+
+.subpage {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 48px 20px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+.subpage__back {
+  display: inline-block;
+  margin-bottom: 18px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.subpage__hero {
+  margin-bottom: 28px;
+}
+
+.subpage__hero h1 {
+  margin-bottom: 0.5rem;
+}
+
+.subpage__grid {
+  display: grid;
+  gap: 18px;
+}
+
+.subpage__card {
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 24px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.subpage__card h2,
+.subpage__card h3 {
+  margin-top: 0;
+}
+
+.microbubble-page {
+  position: relative;
+  overflow-x: hidden;
+  cursor: url("content/probe-cursor.png") 20 20, auto;
+}
+
+.microbubble-scene {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.microbubble-page a,
+.microbubble-page button,
+.microbubble-page input,
+.microbubble-page summary,
+.microbubble-page [role="button"] {
+  cursor: pointer;
+}
+
+.microbubble {
+  --bubble-x: 0px;
+  --bubble-y: 0px;
+  --bubble-r: 0deg;
+  --bubble-scale: 1;
+  position: absolute;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 34% 34%, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.38) 18%, rgba(135, 179, 255, 0.18) 42%, rgba(37, 99, 235, 0.08) 70%, rgba(37, 99, 235, 0.02) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  box-shadow:
+    inset -8px -8px 14px rgba(37, 99, 235, 0.08),
+    inset 8px 8px 14px rgba(255, 255, 255, 0.42),
+    0 16px 28px rgba(37, 99, 235, 0.06);
+  opacity: 0.42;
+  transform: translate3d(var(--bubble-x), var(--bubble-y), 0) rotate(var(--bubble-r)) scale(var(--bubble-scale));
+  transition: transform 180ms ease-out;
+}
+
+.microbubble::after {
+  content: "";
+  position: absolute;
+  inset: 12% 12% auto auto;
+  width: 24%;
+  height: 24%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.75);
+  filter: blur(4px);
+}
+
+.microbubble--one { top: 8%; left: 4%; width: 54px; height: 54px; }
+.microbubble--two { top: 12%; left: 22%; width: 38px; height: 38px; }
+.microbubble--three { top: 20%; left: 40%; width: 62px; height: 62px; }
+.microbubble--four { top: 10%; right: 18%; width: 46px; height: 46px; }
+.microbubble--five { top: 24%; right: 8%; width: 34px; height: 34px; }
+.microbubble--six { top: 34%; left: 12%; width: 42px; height: 42px; }
+.microbubble--seven { top: 42%; left: 30%; width: 30px; height: 30px; }
+.microbubble--eight { top: 38%; right: 28%; width: 58px; height: 58px; }
+.microbubble--nine { top: 52%; right: 10%; width: 40px; height: 40px; }
+.microbubble--ten { bottom: 24%; left: 8%; width: 64px; height: 64px; }
+.microbubble--eleven { bottom: 18%; left: 26%; width: 36px; height: 36px; }
+.microbubble--twelve { bottom: 14%; left: 48%; width: 50px; height: 50px; }
+.microbubble--thirteen { bottom: 20%; right: 22%; width: 44px; height: 44px; }
+.microbubble--fourteen { bottom: 8%; right: 6%; width: 70px; height: 70px; }
+.microbubble--fifteen { top: 16%; left: 58%; width: 28px; height: 28px; }
+.microbubble--sixteen { top: 28%; left: 72%; width: 52px; height: 52px; }
+.microbubble--seventeen { top: 60%; left: 18%; width: 32px; height: 32px; }
+.microbubble--eighteen { top: 64%; left: 62%; width: 48px; height: 48px; }
+.microbubble--nineteen { bottom: 30%; right: 34%; width: 26px; height: 26px; }
+.microbubble--twenty { bottom: 10%; left: 64%; width: 38px; height: 38px; }
+.microbubble--twentyone { bottom: 34%; right: 4%; width: 56px; height: 56px; }
 
 .animate {
   opacity: 1;
