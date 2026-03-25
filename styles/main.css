@@ -91,6 +91,13 @@ a {
   color: var(--muted);
 }
 
+.editor-doc-btn {
+  position: fixed;
+  top: 18px;
+  right: 20px;
+  z-index: 45;
+}
+
 .role-toggle {
   position: sticky;
   top: 0;
@@ -1079,6 +1086,11 @@ body[data-role="cardiologist"] .flow-progress__fill path {
     grid-template-columns: 1fr;
   }
 
+  .editor-doc-btn {
+    top: 70px;
+    right: 20px;
+  }
+
   .story-nav {
     position: relative;
     top: 0;
@@ -1099,6 +1111,12 @@ body[data-role="cardiologist"] .flow-progress__fill path {
 }
 
 @media (max-width: 640px) {
+  .editor-doc-btn {
+    position: static;
+    display: block;
+    margin: 12px 20px 0 auto;
+  }
+
   .panel {
     padding: 24px;
   }

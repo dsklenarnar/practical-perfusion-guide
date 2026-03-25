@@ -1340,6 +1340,225 @@ function renderReferences() {
     .join("");
 }
 
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function renderDocList(items) {
+  return `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
+}
+
+function buildEditorDocument() {
+  const protocolHtml = protocols
+    .map(
+      (protocol) => `
+        <h3>${escapeHtml(protocol.title)}</h3>
+        <p><strong>Machine:</strong> ${escapeHtml(protocol.machineId)}<br /><strong>UEA:</strong> ${escapeHtml(protocol.bubbleId)}</p>
+        <p>${escapeHtml(protocol.summary)}</p>
+        <h4>Meta</h4>
+        ${renderDocList(protocol.meta.map((item) => `${item.label}: ${item.value}`))}
+        <h4>Stages</h4>
+        ${protocol.stages
+          .map(
+            (stage) => `
+              <p><strong>${escapeHtml(stage.title)}</strong></p>
+              ${renderDocList(stage.bullets)}
+            `,
+          )
+          .join("")}
+        <h4>Pitfalls</h4>
+        ${protocol.pitfalls
+          .map(
+            (pitfall) => `
+              <p><strong>${escapeHtml(pitfall.title)}</strong></p>
+              <p>Signal: ${escapeHtml(pitfall.signal)}</p>
+              <p>Fix: ${escapeHtml(pitfall.fix)}</p>
+            `,
+          )
+          .join("")}
+        <h4>Quality</h4>
+        <p><strong>Metrics</strong></p>
+        ${renderDocList(protocol.quality.metrics.map((metric) => `${metric.label}: ${metric.value}${metric.note ? ` (${metric.note})` : ""}`))}
+        <p><strong>Acquisition targets</strong></p>
+        ${renderDocList(protocol.quality.acquisitionTargets)}
+        <p><strong>What to document</strong></p>
+        ${renderDocList(protocol.quality.document)}
+        <p><strong>When the study is usable</strong></p>
+        ${renderDocList(protocol.quality.acceptableStudy)}
+        <p><strong>QA pearls</strong></p>
+        ${renderDocList(protocol.quality.pearls)}
+      `,
+    )
+    .join("");
+
+  const html = `
+    <html xmlns:o="urn:schemas-microsoft-com:office:office"
+          xmlns:w="urn:schemas-microsoft-com:office:word"
+          xmlns="http://www.w3.org/TR/REC-html40">
+      <head>
+        <meta charset="utf-8" />
+        <title>Practical Perfusion Playbook - Editor Copy</title>
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.45; color: #111827; }
+          h1, h2, h3, h4 { color: #111827; }
+          h1 { margin-bottom: 8px; }
+          h2 { margin-top: 28px; border-bottom: 1px solid #d1d5db; padding-bottom: 4px; }
+          h3 { margin-top: 18px; }
+          p, li { font-size: 11pt; }
+          .note { color: #4b5563; font-style: italic; }
+        </style>
+      </head>
+      <body>
+        <h1>Practical Perfusion Playbook</h1>
+        <p class="note">Editor export generated from the site text. Use Track Changes or comments in Word for markup.</p>
+
+        <h2>Hero</h2>
+        <p><strong>Eyebrow:</strong> Myocardial Contrast Echocardiography</p>
+        <p><strong>Title:</strong> Practical Perfusion Playbook</p>
+        <p><strong>Intro:</strong> A practical guide for sonographers performing myocardial contrast echocardiography. Choose your scanner and agent to see a step-by-step infusion workflow, with alternate settings available for comparison and real-time troubleshooting.</p>
+
+        <h2>Background</h2>
+        <p>Contrast-specific echocardiography already has a strong practice foundation for improving endocardial border definition and converting technically limited studies into diagnostic examinations. The major perfusion literature extends that workflow: low-MI imaging, steady contrast delivery, and a reproducible flash-replenishment method let sonographers assess wall motion and myocardial perfusion in the same study. The details below summarize why continuous infusion is practical, how the technique evolved, and where it fits in stress imaging.</p>
+        ${backgroundTopics
+          .map(
+            (topic) => `
+              <h3>${escapeHtml(topic.title)}</h3>
+              <p>${escapeHtml(topic.summary)}</p>
+              ${renderDocList(topic.bullets)}
+            `,
+          )
+          .join("")}
+
+        <h2>Select Machine and Probe</h2>
+        ${machines
+          .map(
+            (machine) => `
+              <h3>${escapeHtml(machine.name)}</h3>
+              <p><strong>Badge:</strong> ${escapeHtml(machine.badge)}</p>
+              <p><strong>Probe:</strong> ${escapeHtml(machine.probe)}</p>
+              <p>${escapeHtml(machine.summary)}</p>
+              <p><strong>Positioning</strong></p>
+              ${renderDocList(machine.positioning)}
+              <p><strong>Key knobs</strong></p>
+              ${renderDocList(machine.keyKnobs)}
+            `,
+          )
+          .join("")}
+
+        <h2>Select UEA</h2>
+        ${bubbles
+          .map(
+            (bubble) => `
+              <h3>${escapeHtml(bubble.name)}</h3>
+              <p><strong>Badge:</strong> ${escapeHtml(bubble.badge)}</p>
+              <p>${escapeHtml(bubble.summary)}</p>
+              <p><strong>Label link:</strong> ${escapeHtml(bubble.labelingLabel)} - ${escapeHtml(bubble.labelingUrl)}</p>
+              <p><strong>Prep</strong></p>
+              ${renderDocList(bubble.prep)}
+              <p><strong>Sustainment</strong></p>
+              ${renderDocList(bubble.sustainment)}
+            `,
+          )
+          .join("")}
+
+        <h2>Checklist</h2>
+        ${checklistSections
+          .map(
+            (section) => `
+              <h3>${escapeHtml(section.title)}</h3>
+              ${renderDocList(section.items)}
+            `,
+          )
+          .join("")}
+
+        <h2>Common Pitfalls</h2>
+        <p>These artifact patterns are worth learning before any machine-specific protocol. The goal is to separate acquisition error from a true perfusion finding and make a correction before moving on. Across the MCE literature, the recurring themes are attenuation, swirling, blooming, rib or lung shadowing, and false apical defects caused by near-field destruction or poor gain/focus choices.</p>
+        ${artifactTeachingCards
+          .map(
+            (pitfall) => `
+              <h3>${escapeHtml(pitfall.title)}</h3>
+              <p><strong>Signal:</strong> ${escapeHtml(pitfall.signal)}</p>
+              <p><strong>Fix:</strong> ${escapeHtml(pitfall.fix)}</p>
+            `,
+          )
+          .join("")}
+
+        <h2>Quality Data Examples</h2>
+        <p>Use this section to judge whether the acquisition is technically sound before interpreting perfusion.</p>
+        <h3>${escapeHtml(featuredExample.title)}</h3>
+        <p>${escapeHtml(featuredExample.caption)}</p>
+        <h3>Core data quality recommendations</h3>
+        ${qualityGuardrails
+          .map((item) => `<p><strong>${escapeHtml(item.title)}:</strong> ${escapeHtml(item.detail)}</p>`)
+          .join("")}
+
+        <h2>Stress Echo</h2>
+        <h3>${escapeHtml(stressEchoOverview.title)}</h3>
+        <p>${escapeHtml(stressEchoOverview.description)}</p>
+        ${renderDocList(stressEchoOverview.bullets)}
+        <h3>Stress workflow schematic</h3>
+        ${stressEchoWorkflow
+          .map(
+            (item) => `
+              <p><strong>${escapeHtml(item.step)}</strong></p>
+              <p>${escapeHtml(item.detail)}</p>
+            `,
+          )
+          .join("")}
+
+        <h2>Interpretation (Cardiologist mode)</h2>
+        <h3>${escapeHtml(interpretationOverview.title)}</h3>
+        ${renderDocList(interpretationOverview.bullets)}
+
+        <h2>References</h2>
+        ${referenceSections
+          .map(
+            (section) => `
+              <h3>${escapeHtml(section.title)}</h3>
+              ${section.items
+                .map(
+                  (item) => `
+                    <p><strong>${escapeHtml(item.label)}</strong><br />
+                    ${escapeHtml(item.href)}<br />
+                    ${escapeHtml(item.note)}</p>
+                  `,
+                )
+                .join("")}
+            `,
+          )
+          .join("")}
+
+        <h2>Protocols</h2>
+        ${protocolHtml}
+
+        <h2>Footer</h2>
+        <p>Built for bedside pragmatists. Feedback? Drop a note in the repo.</p>
+        <p>Educational content only. This guide reflects the author's practical approach and has not been reviewed or approved by the FDA. Always follow current product labeling, institutional policy, and clinical judgment.</p>
+      </body>
+    </html>
+  `;
+
+  return html;
+}
+
+function downloadEditorDocument() {
+  const html = buildEditorDocument();
+  const blob = new Blob([html], { type: "application/msword" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "practical-perfusion-playbook-editor-copy.doc";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
 function loadChecklistState() {
   try {
     const saved = window.localStorage.getItem(CHECKLIST_STORAGE_KEY);
@@ -1467,6 +1686,7 @@ function wireButtons() {
     "toggle-machine-compare",
   );
   const checklistBtn = document.getElementById("download-checklist");
+  const editorDocBtn = document.getElementById("download-editor-doc");
   const roleButtons = Array.from(
     document.querySelectorAll(".role-toggle__button"),
   );
@@ -1509,6 +1729,14 @@ function wireButtons() {
       checklistBtn.textContent = "Press ⌘+C to copy";
       setTimeout(() => (checklistBtn.textContent = "Copy universal checklist"), 2000);
     }
+  });
+
+  editorDocBtn?.addEventListener("click", () => {
+    downloadEditorDocument();
+    editorDocBtn.textContent = "Downloaded!";
+    setTimeout(() => {
+      editorDocBtn.textContent = "Download editor document";
+    }, 2000);
   });
 
   roleButtons.forEach((button) => {
